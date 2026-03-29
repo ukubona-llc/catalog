@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukubona — Digital Twin Naming Convention</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0f0f1a;
+    --bg3: #14141f;
+    --border: #1e1e30;
+    --text: #e8e6f0;
+    --muted: #6b6880;
+    --accent: #c8b8ff;
+    --accent2: #7fffd4;
+    --accent3: #ff9966;
+    --t-col: #ff6b6b;
+    --m-col: #ffd93d;
+    --v-col: #6bcfff;
+    --e-col: #c8b8ff;
+    --s-col: #6bffb8;
+    --grey: #888899;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  header {
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: 'UKUBONA';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 180px;
+    color: #ffffff04;
+    letter-spacing: 10px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    color: var(--text);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 20px;
+    font-size: 16px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section:last-child { border-bottom: none; }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--accent);
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  p {
+    color: #b8b4c8;
+    max-width: 760px;
+    margin-bottom: 16px;
+  }
+
+  /* SCHEMA DISPLAY */
+  .schema {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px;
+    margin: 32px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .schema::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--t-col), var(--m-col), var(--v-col), var(--e-col), var(--s-col));
+  }
+
+  .schema-code {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(14px, 2.5vw, 22px);
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: center;
+  }
+
+  .seg {
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .seg-fixed { color: var(--muted); }
+  .seg-sep { color: var(--muted); padding: 6px 2px; }
+  .seg-scale { color: var(--accent3); background: #ff996610; }
+  .seg-domain { color: var(--accent2); background: #7fffd410; }
+  .seg-tmves { color: var(--accent); background: #c8b8ff10; }
+  .seg-dt { color: var(--muted); }
+  .seg-version { color: var(--grey); background: #88889910; }
+
+  .schema-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .legend-key {
+    font-weight: 500;
+    min-width: 80px;
+    color: var(--text);
+  }
+
+  .legend-val { color: var(--muted); line-height: 1.5; }
+
+  /* PENTAD */
+  .pentad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 32px 0;
+  }
+
+  .pentad-node {
+    background: var(--bg2);
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .pentad-node:hover { background: var(--bg3); }
+
+  .pentad-node.grey-aware {
+    background: var(--bg);
+    opacity: 0.7;
+  }
+
+  .pentad-node.grey-aware::after {
+    content: 'GREY AWARE POLICY';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--grey);
+    white-space: nowrap;
+  }
+
+  .node-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .node-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .node-bayes {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .node-desc {
+    font-size: 13px;
+    color: #888;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .t-color { color: var(--t-col); }
+  .m-color { color: var(--m-col); }
+  .v-color { color: var(--v-col); }
+  .e-color { color: var(--e-col); }
+  .s-color { color: var(--s-col); }
+
+  /* SCALE TABLE */
+  .scale-grid {
+    display: grid;
+    grid-template-columns: 60px 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 32px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+
+  .sg-head {
+    background: var(--bg3);
+    padding: 12px 16px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .sg-cell {
+    background: var(--bg2);
+    padding: 14px 16px;
+    color: var(--text);
+  }
+
+  .sg-cell.muted { color: var(--muted); }
+  .sg-num { color: var(--accent3); font-weight: 500; text-align: center; }
+
+  /* MAIN TABLE */
+  .twin-table-wrap {
+    overflow-x: auto;
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  thead tr {
+    background: var(--bg3);
+    border-bottom: 2px solid var(--border);
+  }
+
+  thead th {
+    padding: 14px 16px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: var(--bg3); }
+
+  tbody tr.grey-row {
+    opacity: 0.55;
+  }
+
+  tbody tr.grey-row:hover { opacity: 0.8; background: var(--bg3); }
+
+  td {
+    padding: 12px 16px;
+    vertical-align: top;
+    color: var(--text);
+  }
+
+  td.num { color: var(--muted); text-align: center; }
+
+  td.readable {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: #c8c4d8;
+    min-width: 200px;
+  }
+
+  td.code {
+    white-space: nowrap;
+  }
+
+  .code-pill {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--accent2);
+  }
+
+  .node-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .badge-t { background: #ff6b6b15; color: var(--t-col); border: 1px solid #ff6b6b30; }
+  .badge-m { background: #ffd93d15; color: var(--m-col); border: 1px solid #ffd93d30; }
+  .badge-v { background: #6bcfff15; color: var(--v-col); border: 1px solid #6bcfff30; }
+  .badge-e { background: #c8b8ff15; color: var(--e-col); border: 1px solid #c8b8ff30; }
+  .badge-s { background: #6bffb815; color: var(--s-col); border: 1px solid #6bffb830; }
+
+  td.notes {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    min-width: 180px;
+  }
+
+  td.grey-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--grey);
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 14px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--muted);
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--bg3);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .filter-btn.active.ft { border-color: var(--t-col); color: var(--t-col); }
+  .filter-btn.active.fm { border-color: var(--m-col); color: var(--m-col); }
+  .filter-btn.active.fv { border-color: var(--v-col); color: var(--v-col); }
+  .filter-btn.active.fe { border-color: var(--e-col); color: var(--e-col); }
+  .filter-btn.active.fs { border-color: var(--s-col); color: var(--s-col); }
+
+  /* INSIGHT BOX */
+  .insight {
+    background: var(--bg2);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .insight.v-insight { border-color: var(--v-col); }
+  .insight.grey-insight { border-color: var(--grey); }
+
+  .insight p {
+    color: #c8c4d8;
+    font-size: 17px;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .insight p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-node {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+    position: relative;
+  }
+
+  .flow-node .fn-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .flow-node .fn-bayes {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 20px;
+    padding: 0 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .flow-node.active-node {
+    border-color: var(--v-col);
+    background: #6bcfff08;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 60px;
+    background: var(--bg2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .footer-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate { animation: fadeUp 0.6s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.2s; opacity: 0; }
+  .delay-3 { animation-delay: 0.3s; opacity: 0; }
+  .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+  @media (max-width: 768px) {
+    header, section, footer { padding: 40px 24px; }
+    .pentad { grid-template-columns: 1fr 1fr; }
+    .pentad-node:last-child { grid-column: span 2; }
+    h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.0</div>
+  <h1 class="animate delay-2">Digital Twin<br><em>Naming Convention</em></h1>
+  <div class="subtitle animate delay-3">ukb-{scale}-{domain}-{tmves}-dt-v{version} &nbsp;·&nbsp; Bayesian-Aware · Pentadic · Sovereign</div>
+</header>
+
+<!-- SECTION 1: THE SCHEMA -->
+<section>
+  <h3>01 · The Schema</h3>
+  <h2>A name that knows where it lives in the inference chain</h2>
+
+  <p>Every digital twin in the Ukubona manifold carries its epistemological position in its name. The identifier is not a label — it is a coordinate in a five-dimensional inference space: scale, domain, and crucially, <em>which node of the Bayesian pentad this artifact primarily inhabits</em>.</p>
+
+  <div class="schema">
+    <div class="schema-code">
+      <span class="seg seg-fixed">ukb</span>
+      <span class="seg seg-sep">-</span>
+      <span class="seg seg-scale">{scale}</span>
+      <span class="seg seg-sep">-</span>
+      <span class="seg seg-domain">{domain}</span>
+      <span class="seg seg-sep">-</span>
+      <span class="seg seg-tmves">{tmves}</span>
+      <span class="seg seg-sep">-</span>
+      <span class="seg seg-dt">dt</span>
+      <span class="seg seg-sep">-</span>
+      <span class="seg seg-version">v{nn}</span>
+    </div>
+    <div class="schema-legend">
+      <div class="legend-item">
+        <span class="legend-key" style="color:var(--accent3)">scale</span>
+        <span class="legend-val">1–5 · Person → Civilization</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-key" style="color:var(--accent2)">domain</span>
+        <span class="legend-val">ICD-10 root or ontology key</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-key" style="color:var(--accent)">tmves</span>
+        <span class="legend-val">t · m · v · e · s</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-key" style="color:var(--grey)">version</span>
+        <span class="legend-val">v00, v01 … sequential</span>
+      </div>
+    </div>
+  </div>
+
+  <p>The domain slot uses ICD-10 chapter/block codes at scales 2–3 (Network, System), anatomical shorthand at scale 1 (Person), ISO 3166 country codes at scale 5 (Civilization). Three existing standards. No reinvention. The ontology stays yours.</p>
+</section>
+
+<!-- SECTION 2: THE PENTAD -->
+<section>
+  <h3>02 · The Pentad</h3>
+  <h2>T → M → V → E → S &nbsp; / &nbsp; P(θ_t) → P(D|θ_t) → P(D) → P(θ|D) → P(θ_{t+1})</h2>
+
+  <p>The five TMVES nodes map exactly onto the Bayesian inference chain. The twin's TMVES code declares which node it primarily inhabits — where its intelligence lives, and where it applies leverage on the clinical decision.</p>
+
+  <div class="pentad">
+    <div class="pentad-node grey-aware">
+      <div class="node-letter t-color">T</div>
+      <div class="node-name">Tensor</div>
+      <div class="node-bayes">P(θ_t)</div>
+      <div class="node-desc">The accumulated prior. Civilization, population, policy.</div>
+    </div>
+    <div class="pentad-node">
+      <div class="node-letter m-color">M</div>
+      <div class="node-name">Matrix</div>
+      <div class="node-bayes">P(D|θ_t)</div>
+      <div class="node-desc">Study design. What data would you expect, given that prior?</div>
+    </div>
+    <div class="pentad-node" style="border: 1px solid var(--v-col)20; background: #6bcfff04;">
+      <div class="node-letter v-color">V</div>
+      <div class="node-name">Vector</div>
+      <div class="node-bayes">P(D)</div>
+      <div class="node-desc">The data itself. The governance wall. Sovereignty lives here.</div>
+    </div>
+    <div class="pentad-node">
+      <div class="node-letter e-color">E</div>
+      <div class="node-name">Eigenmode</div>
+      <div class="node-bayes">P(θ|D)</div>
+      <div class="node-desc">The posterior. Identity updated by evidence.</div>
+    </div>
+    <div class="pentad-node grey-aware">
+      <div class="node-letter s-color">S</div>
+      <div class="node-name">Scalar</div>
+      <div class="node-bayes">P(θ_{t+1})</div>
+      <div class="node-desc">The decision. The loop closes. Prior updates.</div>
+    </div>
+  </div>
+
+  <div class="insight grey-insight">
+    <p><strong>T and S are Grey Aware Policy.</strong> The prior (T) is set by population science, civilization-scale data, clinical guidelines — sparse in the twin catalog because it is inherited, not computed fresh. The decision (S) is the clinical scalar: tPA yes/no, refer vs operate. Once E is good, S is often a one-liner. The intelligence lives in M, V, and E. The governance failure lives at V.</p>
+  </div>
+
+  <div class="insight v-insight">
+    <p><strong>V is where medicine keeps failing.</strong> HIPAA, GDPR, stigma, siloed labs, institutional fear — these are not data problems. They are V-node sovereignty failures. The decentralized Sovereign Intelligence Broker is specifically a V-node tool. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference.</p>
+  </div>
+</section>
+
+<!-- SECTION 3: SCALE INDEX -->
+<section>
+  <h3>03 · Scale Index</h3>
+  <h2>Person → Network → System → Regulator → Civilization</h2>
+
+  <div class="scale-grid">
+    <div class="sg-head">Scale</div>
+    <div class="sg-head">Name</div>
+    <div class="sg-head">Domain convention</div>
+    <div class="sg-head">Example</div>
+
+    <div class="sg-cell sg-num">1</div>
+    <div class="sg-cell">Person</div>
+    <div class="sg-cell muted">ICD-10 code / anatomy shorthand</div>
+    <div class="sg-cell muted">ukb-1-C50-v-dt-v00</div>
+
+    <div class="sg-cell sg-num">2</div>
+    <div class="sg-cell">Network</div>
+    <div class="sg-cell muted">ICD-10 block / social context</div>
+    <div class="sg-cell muted">ukb-2-A15-m-dt-v00</div>
+
+    <div class="sg-cell sg-num">3</div>
+    <div class="sg-cell">System</div>
+    <div class="sg-cell muted">ICD-10 chapter root</div>
+    <div class="sg-cell muted">ukb-3-N18-e-dt-v00</div>
+
+    <div class="sg-cell sg-num">4</div>
+    <div class="sg-cell">Regulator</div>
+    <div class="sg-cell muted">Policy domain / WHO program code</div>
+    <div class="sg-cell muted">ukb-4-Z28-t-dt-v00</div>
+
+    <div class="sg-cell sg-num">5</div>
+    <div class="sg-cell">Civilization</div>
+    <div class="sg-cell muted">ISO 3166 country / region code</div>
+    <div class="sg-cell muted">ukb-5-UGA-t-dt-v00</div>
+  </div>
+</section>
+
+<!-- SECTION 4: THE MANIFOLD -->
+<section>
+  <h3>04 · The Manifold</h3>
+  <h2>40 twins across the decision space</h2>
+
+  <p>Each row is a real clinical or population problem, named by its position in the inference chain. Greyed rows carry Grey Aware Policy designation — T priors set by civilization-scale evidence, S scalars executable once eigenmode E is resolved.</p>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter →</span>
+    <button class="filter-btn active" onclick="filterTable('all', this)">All</button>
+    <button class="filter-btn ft" onclick="filterTable('t', this)">T · Prior</button>
+    <button class="filter-btn fm" onclick="filterTable('m', this)">M · Study Design</button>
+    <button class="filter-btn fv" onclick="filterTable('v', this)">V · Data</button>
+    <button class="filter-btn fe" onclick="filterTable('e', this)">E · Posterior</button>
+    <button class="filter-btn fs" onclick="filterTable('s', this)">S · Decision</button>
+  </div>
+
+  <div class="twin-table-wrap">
+    <table id="twinTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Twin (readable)</th>
+          <th>UKB Code</th>
+          <th>Scale</th>
+          <th>Domain</th>
+          <th>Node</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-node="v"><td class="num">1</td><td class="readable">Breast lump, 29yo</td><td class="code"><span class="code-pill">ukb-1-C50-v-dt-v00</span></td><td>Person</td><td>Breast onc</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Your existing twin · V wall = access to imaging</td></tr>
+        <tr data-node="e"><td class="num">2</td><td class="readable">CKD progression, eGFR trending</td><td class="code"><span class="code-pill">ukb-3-N18-e-dt-v00</span></td><td>System</td><td>CKD</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Your existing twin · eigenmode is eGFR slope</td></tr>
+        <tr data-node="m"><td class="num">3</td><td class="readable">Prostate PSA ambiguity, 58yo</td><td class="code"><span class="code-pill">ukb-1-C61-m-dt-v00</span></td><td>Person</td><td>Prostate onc</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Classic overdiagnosis · study design problem</td></tr>
+        <tr data-node="v"><td class="num">4</td><td class="readable">Childhood fever triage, Kampala</td><td class="code"><span class="code-pill">ukb-1-R50-v-dt-v00</span></td><td>Person</td><td>Fever/sepsis</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Malaria vs bacterial · V wall is time itself</td></tr>
+        <tr data-node="e"><td class="num">5</td><td class="readable">Maternal mortality risk, 3rd trimester</td><td class="code"><span class="code-pill">ukb-1-O94-e-dt-v00</span></td><td>Person</td><td>Obstetrics</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Uganda MMR 336/100k · enormous T prior</td></tr>
+        <tr data-node="m"><td class="num">6</td><td class="readable">Type 2 diabetes onset prediction</td><td class="code"><span class="code-pill">ukb-1-E11-m-dt-v00</span></td><td>Person</td><td>Metabolic</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Which labs to order · pure study design</td></tr>
+        <tr data-node="e"><td class="num">7</td><td class="readable">HIV treatment response, first-line ART</td><td class="code"><span class="code-pill">ukb-1-B24-e-dt-v00</span></td><td>Person</td><td>HIV</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Viral load as eigenmode update</td></tr>
+        <tr data-node="e"><td class="num">8</td><td class="readable">Hypertension cascade, 45yo</td><td class="code"><span class="code-pill">ukb-2-I10-e-dt-v00</span></td><td>Network</td><td>HTN</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Family + community as network posterior</td></tr>
+        <tr data-node="m"><td class="num">9</td><td class="readable">TB household transmission</td><td class="code"><span class="code-pill">ukb-2-A15-m-dt-v00</span></td><td>Network</td><td>TB</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Contact network prior shapes data collection</td></tr>
+        <tr data-node="e"><td class="num">10</td><td class="readable">Sickle cell, pain crisis prediction</td><td class="code"><span class="code-pill">ukb-1-D57-e-dt-v00</span></td><td>Person</td><td>Hematology</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Temporal · crisis has eigenmode signature</td></tr>
+        <tr data-node="v"><td class="num">11</td><td class="readable">Neonatal jaundice, 48hr</td><td class="code"><span class="code-pill">ukb-1-P59-v-dt-v00</span></td><td>Person</td><td>Neonatal</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Time-critical · bilirubin curve as V node</td></tr>
+        <tr data-node="m"><td class="num">12</td><td class="readable">Cervical cancer screening triage</td><td class="code"><span class="code-pill">ukb-1-C53-m-dt-v00</span></td><td>Person</td><td>GYN onc</td><td><span class="node-badge badge-m">M</span></td><td class="notes">VIA vs HPV vs colposcopy · study design</td></tr>
+        <tr class="grey-row" data-node="s"><td class="num">13</td><td class="readable">Epilepsy medication titration</td><td class="code"><span class="code-pill">ukb-1-G40-s-dt-v00</span></td><td>Person</td><td>Neurology</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · which drug, which dose</td></tr>
+        <tr data-node="e"><td class="num">14</td><td class="readable">Alcohol use disorder, liver trajectory</td><td class="code"><span class="code-pill">ukb-1-F10-e-dt-v00</span></td><td>Person</td><td>Psych/liver</td><td><span class="node-badge badge-e">E</span></td><td class="notes">λᵢ irreversibility very high</td></tr>
+        <tr data-node="v"><td class="num">15</td><td class="readable">Postpartum depression, 6-week visit</td><td class="code"><span class="code-pill">ukb-1-F53-v-dt-v00</span></td><td>Person</td><td>Perinatal psych</td><td><span class="node-badge badge-v">V</span></td><td class="notes">V wall = stigma · massively underdiagnosed</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">16</td><td class="readable">Malnutrition, under-5, Northern Uganda</td><td class="code"><span class="code-pill">ukb-1-E46-t-dt-v00</span></td><td>Person</td><td>Nutrition</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · MUAC as civilization prior</td></tr>
+        <tr class="grey-row" data-node="s"><td class="num">17</td><td class="readable">Stroke triage, 3hr window</td><td class="code"><span class="code-pill">ukb-1-I64-s-dt-v00</span></td><td>Person</td><td>Neuro/vasc</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · tPA yes/no · irreversible scalar</td></tr>
+        <tr data-node="m"><td class="num">18</td><td class="readable">Diabetic retinopathy screening</td><td class="code"><span class="code-pill">ukb-3-H36-m-dt-v00</span></td><td>System</td><td>Ophthalmology</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Camera + AI · data collection design</td></tr>
+        <tr data-node="e"><td class="num">19</td><td class="readable">Lung cancer, smoker, nodule 8mm</td><td class="code"><span class="code-pill">ukb-1-C34-e-dt-v00</span></td><td>Person</td><td>Thoracic onc</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Fleischner criteria as compressed prior</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">20</td><td class="readable">Colorectal cancer, Lynch syndrome family</td><td class="code"><span class="code-pill">ukb-2-C18-t-dt-v00</span></td><td>Network</td><td>GI onc</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · germline prior dominates</td></tr>
+        <tr class="grey-row" data-node="s"><td class="num">21</td><td class="readable">Acute abdomen, rural Uganda</td><td class="code"><span class="code-pill">ukb-1-R10-s-dt-v00</span></td><td>Person</td><td>Surgery</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · refer vs operate · irreversible</td></tr>
+        <tr data-node="e"><td class="num">22</td><td class="readable">Preterm birth risk, 24 weeks</td><td class="code"><span class="code-pill">ukb-1-O60-e-dt-v00</span></td><td>Person</td><td>Obstetrics</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Cervical length + fibronectin eigenmode</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">23</td><td class="readable">Schizophrenia first episode</td><td class="code"><span class="code-pill">ukb-1-F20-t-dt-v00</span></td><td>Person</td><td>Psychiatry</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · family history + prodrome as prior</td></tr>
+        <tr data-node="m"><td class="num">24</td><td class="readable">Antibiotic resistance, UTI</td><td class="code"><span class="code-pill">ukb-3-N39-m-dt-v00</span></td><td>System</td><td>Infect dis</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Local resistance patterns shape study design</td></tr>
+        <tr data-node="e"><td class="num">25</td><td class="readable">Falls risk, 80yo polypharmacy</td><td class="code"><span class="code-pill">ukb-1-W19-e-dt-v00</span></td><td>Person</td><td>Geriatrics</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Medication weights wᵢ interact</td></tr>
+        <tr data-node="m"><td class="num">26</td><td class="readable">Thyroid nodule, incidental</td><td class="code"><span class="code-pill">ukb-1-E04-m-dt-v00</span></td><td>Person</td><td>Endocrine</td><td><span class="node-badge badge-m">M</span></td><td class="notes">To biopsy or not · pure M design</td></tr>
+        <tr data-node="v"><td class="num">27</td><td class="readable">Mental health crisis, adolescent</td><td class="code"><span class="code-pill">ukb-1-F32-v-dt-v00</span></td><td>Person</td><td>Psychiatry</td><td><span class="node-badge badge-v">V</span></td><td class="notes">V wall = stigma · governance failure</td></tr>
+        <tr data-node="m"><td class="num">28</td><td class="readable">Construction worker injury risk</td><td class="code"><span class="code-pill">ukb-2-W99-m-dt-v00</span></td><td>Network</td><td>Occupational</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Your SSP twin territory</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">29</td><td class="readable">Cholera outbreak, camp setting</td><td class="code"><span class="code-pill">ukb-4-A00-t-dt-v00</span></td><td>Regulator</td><td>Infect dis</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · WASH policy as civilization prior</td></tr>
+        <tr class="grey-row" data-node="s"><td class="num">30</td><td class="readable">Road traffic accident triage</td><td class="code"><span class="code-pill">ukb-1-V89-s-dt-v00</span></td><td>Person</td><td>Trauma</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · ABCDE scalar chain</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">31</td><td class="readable">Dementia onset, 68yo</td><td class="code"><span class="code-pill">ukb-1-F00-t-dt-v00</span></td><td>Person</td><td>Neurodegen</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · weight decay · your own framework</td></tr>
+        <tr data-node="m"><td class="num">32</td><td class="readable">Malaria prophylaxis, traveler</td><td class="code"><span class="code-pill">ukb-1-B54-m-dt-v00</span></td><td>Person</td><td>Infect dis</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Destination prior shapes drug choice</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">33</td><td class="readable">Child vaccination coverage gap</td><td class="code"><span class="code-pill">ukb-4-Z28-t-dt-v00</span></td><td>Regulator</td><td>Public health</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · herd immunity threshold as T prior</td></tr>
+        <tr data-node="m"><td class="num">34</td><td class="readable">Infertility workup, couple</td><td class="code"><span class="code-pill">ukb-2-N97-m-dt-v00</span></td><td>Network</td><td>Reproductive</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Dyadic · both nodes matter</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">35</td><td class="readable">Glaucoma screening, family hx</td><td class="code"><span class="code-pill">ukb-1-H40-t-dt-v00</span></td><td>Person</td><td>Ophthalmology</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · IOP as prior signal</td></tr>
+        <tr data-node="m"><td class="num">36</td><td class="readable">Mpox exposure, MSM network</td><td class="code"><span class="code-pill">ukb-2-B04-m-dt-v00</span></td><td>Network</td><td>Infect dis</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Contact network is the M node</td></tr>
+        <tr data-node="v"><td class="num">37</td><td class="readable">Antenatal syphilis screening</td><td class="code"><span class="code-pill">ukb-1-A53-v-dt-v00</span></td><td>Person</td><td>STI</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Testing as data collection act · V node</td></tr>
+        <tr data-node="e"><td class="num">38</td><td class="readable">Healthcare worker burnout</td><td class="code"><span class="code-pill">ukb-2-Z73-e-dt-v00</span></td><td>Network</td><td>Occupational</td><td><span class="node-badge badge-e">E</span></td><td class="notes">System-level weight decay</td></tr>
+        <tr class="grey-row" data-node="t"><td class="num">39</td><td class="readable">Uganda NCD burden, national</td><td class="code"><span class="code-pill">ukb-5-UGA-t-dt-v00</span></td><td>Civilization</td><td>NCD</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · top of the pentad</td></tr>
+        <tr data-node="e"><td class="num">40</td><td class="readable">Sovereign SIB, mind twin</td><td class="code"><span class="code-pill">ukb-1-mind-e-dt-v00</span></td><td>Person</td><td>Cognitive</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Non-plus-ultra · wᵢ elicitation · the mind is tractable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight v-insight">
+    <p><strong>The distribution tells the story.</strong> M, V, and E dominate because that is where clinical intelligence actually lives — designing what to measure, collecting it through the governance wall, and updating the posterior. T and S are sparse by design: the prior is inherited from civilization-scale science, the decision is a one-liner once E is resolved. Grey Aware Policy means: don't reinvent the prior, don't delay the scalar.</p>
+  </div>
+</section>
+
+<!-- SECTION 5: THE THESIS -->
+<section>
+  <h3>05 · The Thesis</h3>
+  <h2>Decentralized sovereignty at the V node</h2>
+
+  <p>The Sovereign Intelligence Broker is not a product. It is a position in the inference chain. Every twin in this catalog is a rehearsal of the same fundamental act: <em>conditioning on everything known about a person, then updating when new evidence arrives</em>.</p>
+
+  <p>The naming convention is the infrastructure of that act. A twin without a name that encodes its epistemic position is a model without a coordinate. The manifold has no address. The inference cannot be routed.</p>
+
+  <p>The body twin is hard — every disease rewrites the schema. The mind twin is tractable — the architecture is invariant. The weights are everything.</p>
+
+  <div class="flow">
+    <div class="flow-node grey-aware" style="opacity:0.6">
+      <div class="fn-letter t-color">T</div>
+      <div class="fn-bayes">P(θ_t)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="fn-letter m-color">M</div>
+      <div class="fn-bayes">P(D|θ_t)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node active-node">
+      <div class="fn-letter v-color">V</div>
+      <div class="fn-bayes">P(D) ⚠</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="fn-letter e-color">E</div>
+      <div class="fn-bayes">P(θ|D)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node grey-aware" style="opacity:0.6">
+      <div class="fn-letter s-color">S</div>
+      <div class="fn-bayes">P(θ_{t+1})</div>
+    </div>
+  </div>
+
+  <p style="margin-top: 8px; font-style: italic; color: var(--muted); font-size: 15px;">Posteriors become the next priors. The loop is the product. The twin is the loop.</p>
+</section>
+
+<footer>
+  <div class="footer-brand">Ukubona</div>
+  <div class="footer-meta">
+    ukb-naming-convention-v1.0<br>
+    Kampala, Uganda · 2026<br>
+    T → M → V → E → S ↺ U(s)
+  </div>
+</footer>
+
+<script>
+  function filterTable(node, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const rows = document.querySelectorAll('#twinTable tbody tr');
+    rows.forEach(row => {
+      if (node === 'all') {
+        row.style.display = '';
+      } else {
+        row.style.display = row.dataset.node === node ? '' : 'none';
+      }
+    });
+  }
+
+  // Stagger table row reveals
+  document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('#twinTable tbody tr');
+    rows.forEach((row, i) => {
+      row.style.opacity = '0';
+      row.style.transform = 'translateY(8px)';
+      row.style.transition = `opacity 0.3s ease ${i * 0.02}s, transform 0.3s ease ${i * 0.02}s`;
+      setTimeout(() => {
+        row.style.opacity = row.classList.contains('grey-row') ? '0.55' : '1';
+        row.style.transform = 'translateY(0)';
+      }, 100 + i * 20);
+    });
+  });
+</script>
+
+</body>
+</html>
