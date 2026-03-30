@@ -22,6 +22,7 @@
     --e-col: #c8b8ff;
     --s-col: #6bffb8;
     --grey: #888899;
+    --method-col: #e8c87a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -274,6 +275,7 @@
   .v-color { color: var(--v-col); }
   .e-color { color: var(--e-col); }
   .s-color { color: var(--s-col); }
+  .method-color { color: var(--method-col); }
 
   /* SCALE TABLE */
   .scale-grid {
@@ -306,6 +308,81 @@
 
   .sg-cell.muted { color: var(--muted); }
   .sg-num { color: var(--accent3); font-weight: 500; text-align: center; }
+  .sg-num.method-num { color: var(--method-col); }
+
+  .sg-cell.method-cell { color: var(--method-col); }
+  .sg-cell.method-desc { color: var(--muted); font-style: italic; }
+
+  /* METHOD GRID */
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 32px 0;
+  }
+
+  .method-card {
+    background: var(--bg2);
+    padding: 28px 28px;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .method-card:hover { background: var(--bg3); }
+
+  .method-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--method-col);
+    opacity: 0.4;
+  }
+
+  .method-card.primary::before { opacity: 1; }
+
+  .method-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--method-col);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .method-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 8px;
+    display: inline-block;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+
+  .method-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .method-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.5;
+  }
 
   /* MAIN TABLE */
   .twin-table-wrap {
@@ -464,6 +541,7 @@
 
   .insight.v-insight { border-color: var(--v-col); }
   .insight.grey-insight { border-color: var(--grey); }
+  .insight.method-insight { border-color: var(--method-col); }
 
   .insight p {
     color: #c8c4d8;
@@ -565,16 +643,72 @@
     .pentad { grid-template-columns: 1fr 1fr; }
     .pentad-node:last-child { grid-column: span 2; }
     h1 { font-size: 36px; }
+    .method-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.0</div>
+  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.1</div>
   <h1 class="animate delay-2">Digital Twin<br><em>Naming Convention</em></h1>
   <div class="subtitle animate delay-3">ukb-{scale}-{domain}-{tmves}-dt-v{version} &nbsp;·&nbsp; Bayesian-Aware · Pentadic · Sovereign</div>
 </header>
+
+<!-- SECTION 00: THE METHOD LAYER -->
+<section>
+  <h3>00 · The Method Layer</h3>
+  <h2>Scale 0 — the geometry before the content</h2>
+
+  <p>Before any clinical twin can be named, before any scale from 1 to 5 is chosen, there is a prior question: <em>what is the shape of the space being navigated?</em> Scale 0 is the method layer — cross-cutting, scale-invariant, the epistemological substrate on which every twin in this catalog sits.</p>
+
+  <p>Method artifacts do not describe a patient, a network, or a civilization. They describe the <em>rules of inference</em> that apply to all of them equally. The geodesic is the same whether you are walking through a 29-year-old's diagnostic landscape or through 47 years of Middle East geopolitics. The learning rate doctrine is the same whether the irreversible step is a mastectomy or a military strike. Scale 0 is where those invariants live.</p>
+
+  <div class="insight method-insight">
+    <p><strong>Scale 0 is the only scale with a shared URL stem.</strong> All method artifacts live at <span style="font-family:'DM Mono',monospace; color:var(--accent2); font-size:15px;">ukb-0-method-{key}-dt-v{nn}</span> — differentiated only by the domain key. The geometry is invariant. The content changes. The address stays home.</p>
+  </div>
+
+  <div class="method-grid">
+
+    <div class="method-card primary">
+      <div class="method-key">geo · master method</div>
+      <div class="method-code">ukb-0-method-geo-dt-v00</div>
+      <div class="method-title">Geodesic navigation on the patient manifold</div>
+      <div class="method-desc">The patient is θ ∈ 𝓜 — a situated point on a curved historical surface. The clinician's task is to find the path of least curvature-weighted distance through the diagnostic landscape. That path is the geodesic. SGD is one algorithm for approximating it. The geodesic is what it approximates.</div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-key">tmves · inference chain</div>
+      <div class="method-code">ukb-0-method-tmves-dt-v00</div>
+      <div class="method-title">The pentadic Bayesian chain</div>
+      <div class="method-desc">T → M → V → E → S as P(θ_t) → P(D|θ_t) → P(D) → P(θ|D) → P(θ_{t+1}). The five-node architecture that every twin inhabits. The chain is the method. The node code in the identifier declares current position.</div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-key">eta · irreversibility doctrine</div>
+      <div class="method-code">ukb-0-method-eta-dt-v00</div>
+      <div class="method-title">The catastrophic learning rate</div>
+      <div class="method-desc">η must be proportional to reversibility. An irreversible step at incomplete evidence is η = ∞ on an unmapped landscape. The gate condition: max(L) > 0.85, tissue confirmation obtained, N_completeness > 0.90. The S-node does not fire before the E-node resolves.</div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-key">sib · sovereignty tool</div>
+      <div class="method-code">ukb-0-method-sib-dt-v00</div>
+      <div class="method-title">Sovereign Intelligence Broker</div>
+      <div class="method-desc">The V-node tool. Where data is locked, feared, or siloed, the SIB treats inaccessible data as a constrained prior rather than a missing input. Missing data = wide prior, not a dead end. The wall constrains the posterior — it does not kill inference.</div>
+    </div>
+
+    <div class="method-card" style="grid-column: span 2;">
+      <div class="method-key">gap · inherited scalars</div>
+      <div class="method-code">ukb-0-method-gap-dt-v00</div>
+      <div class="method-title">Grey Aware Policy</div>
+      <div class="method-desc">Some geodesics are already known. When the manifold is so well-mapped at the population level that the path is pre-computed — tPA yes/no, MUAC thresholds, ABCDE trauma chain — the individual twin inherits the scalar rather than re-running the full M→V→E sequence. Grey Aware Policy is the doctrine governing when that inheritance is valid and when it must yield to individual curvature. It is the fast path. The geodesic is the slow path. Both are necessary.</div>
+    </div>
+
+  </div>
+
+  <p style="color: var(--muted); font-size: 15px; font-style: italic; font-family: 'Cormorant Garamond', serif;">The organ at Kings College Budo was computing geodesics on an acoustic manifold. Psalm 23 named the master geodesic before the vocabulary existed. ℝⁿ is 𝓜 with history assumed away — the special case, not the general one.</p>
+</section>
 
 <!-- SECTION 1: THE SCHEMA -->
 <section>
@@ -600,11 +734,11 @@
     <div class="schema-legend">
       <div class="legend-item">
         <span class="legend-key" style="color:var(--accent3)">scale</span>
-        <span class="legend-val">1–5 · Person → Civilization</span>
+        <span class="legend-val">0–5 · Method → Civilization</span>
       </div>
       <div class="legend-item">
         <span class="legend-key" style="color:var(--accent2)">domain</span>
-        <span class="legend-val">ICD-10 root or ontology key</span>
+        <span class="legend-val">ICD-10 root, ontology key, or method key</span>
       </div>
       <div class="legend-item">
         <span class="legend-key" style="color:var(--accent)">tmves</span>
@@ -617,7 +751,7 @@
     </div>
   </div>
 
-  <p>The domain slot uses ICD-10 chapter/block codes at scales 2–3 (Network, System), anatomical shorthand at scale 1 (Person), ISO 3166 country codes at scale 5 (Civilization). Three existing standards. No reinvention. The ontology stays yours.</p>
+  <p>The domain slot uses ICD-10 chapter/block codes at scales 2–3 (Network, System), anatomical shorthand at scale 1 (Person), ISO 3166 country codes at scale 5 (Civilization), and short method keys at scale 0 (Method). Three existing standards plus one new layer. No reinvention beyond what the architecture requires.</p>
 </section>
 
 <!-- SECTION 2: THE PENTAD -->
@@ -672,13 +806,18 @@
 <!-- SECTION 3: SCALE INDEX -->
 <section>
   <h3>03 · Scale Index</h3>
-  <h2>Person → Network → System → Regulator → Civilization</h2>
+  <h2>Method → Person → Network → System → Regulator → Civilization</h2>
 
   <div class="scale-grid">
     <div class="sg-head">Scale</div>
     <div class="sg-head">Name</div>
     <div class="sg-head">Domain convention</div>
     <div class="sg-head">Example</div>
+
+    <div class="sg-cell sg-num method-num">0</div>
+    <div class="sg-cell method-cell">Method</div>
+    <div class="sg-cell method-desc">Short key · geo · eta · tmves · sib · gap</div>
+    <div class="sg-cell method-desc">ukb-0-method-geo-dt-v00</div>
 
     <div class="sg-cell sg-num">1</div>
     <div class="sg-cell">Person</div>
@@ -831,9 +970,9 @@
 <footer>
   <div class="footer-brand">Ukubona</div>
   <div class="footer-meta">
-    ukb-naming-convention-v1.0<br>
+    ukb-naming-convention-v1.1<br>
     Kampala, Uganda · 2026<br>
-    T → M → V → E → S ↺ U(s)
+    0 · T → M → V → E → S ↺ U(s)
   </div>
 </footer>
 
