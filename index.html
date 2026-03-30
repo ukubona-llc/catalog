@@ -23,6 +23,11 @@
     --s-col: #6bffb8;
     --grey: #888899;
     --method-col: #e8c87a;
+    --geo-col: #ff9966;
+    --tmves-col: #c8b8ff;
+    --sib-col: #6bcfff;
+    --eta-col: #ff6b6b;
+    --gap-col: #6bffb8;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,7 +41,6 @@
     overflow-x: hidden;
   }
 
-  /* GRAIN OVERLAY */
   body::before {
     content: '';
     position: fixed;
@@ -47,7 +51,6 @@
     opacity: 0.4;
   }
 
-  /* HEADER */
   header {
     padding: 80px 60px 60px;
     border-bottom: 1px solid var(--border);
@@ -87,10 +90,7 @@
     color: var(--text);
   }
 
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
+  h1 em { font-style: italic; color: var(--accent); }
 
   .subtitle {
     margin-top: 20px;
@@ -100,7 +100,6 @@
     letter-spacing: 1px;
   }
 
-  /* SECTIONS */
   section {
     padding: 60px;
     border-bottom: 1px solid var(--border);
@@ -132,7 +131,7 @@
     margin-bottom: 16px;
   }
 
-  /* SCHEMA DISPLAY */
+  /* SCHEMA */
   .schema {
     background: var(--bg2);
     border: 1px solid var(--border);
@@ -163,11 +162,7 @@
     align-items: center;
   }
 
-  .seg {
-    padding: 6px 12px;
-    border-radius: 3px;
-    font-weight: 500;
-  }
+  .seg { padding: 6px 12px; border-radius: 3px; font-weight: 500; }
   .seg-fixed { color: var(--muted); }
   .seg-sep { color: var(--muted); padding: 6px 2px; }
   .seg-scale { color: var(--accent3); background: #ff996610; }
@@ -183,99 +178,285 @@
     margin-top: 8px;
   }
 
-  .legend-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+  .legend-item { display: flex; align-items: flex-start; gap: 10px; font-family: 'DM Mono', monospace; font-size: 12px; }
+  .legend-key { font-weight: 500; min-width: 80px; color: var(--text); }
+  .legend-val { color: var(--muted); line-height: 1.5; }
+
+  /* METHOD TABLE — the main new element */
+  .method-table-wrap {
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .method-table-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--geo-col), var(--tmves-col), var(--sib-col), var(--eta-col), var(--gap-col));
+  }
+
+  .method-table {
+    width: 100%;
+    border-collapse: collapse;
     font-family: 'DM Mono', monospace;
     font-size: 12px;
   }
 
-  .legend-key {
-    font-weight: 500;
-    min-width: 80px;
-    color: var(--text);
+  .method-table thead tr {
+    background: var(--bg3);
+    border-bottom: 2px solid var(--border);
   }
 
-  .legend-val { color: var(--muted); line-height: 1.5; }
-
-  /* PENTAD */
-  .pentad {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 32px 0;
-  }
-
-  .pentad-node {
-    background: var(--bg2);
-    padding: 28px 20px;
-    text-align: center;
-    position: relative;
-    transition: background 0.2s;
-  }
-
-  .pentad-node:hover { background: var(--bg3); }
-
-  .pentad-node.grey-aware {
-    background: var(--bg);
-    opacity: 0.7;
-  }
-
-  .pentad-node.grey-aware::after {
-    content: 'GREY AWARE POLICY';
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 1px;
-    color: var(--grey);
+  .method-table thead th {
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     white-space: nowrap;
   }
 
-  .node-letter {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    line-height: 1;
-    margin-bottom: 8px;
+  .method-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
   }
 
-  .node-name {
+  .method-table tbody tr:last-child { border-bottom: none; }
+  .method-table tbody tr:hover { background: var(--bg3); }
+
+  .method-table td {
+    padding: 18px 18px;
+    vertical-align: top;
+  }
+
+  .mt-step {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    width: 40px;
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  .mt-key {
+    white-space: nowrap;
+    min-width: 80px;
+  }
+
+  .mt-key-inner {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .mt-code {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--accent2);
+    margin-top: 4px;
+  }
+
+  .mt-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    min-width: 220px;
+  }
+
+  .mt-bayes {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .mt-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: #9994b0;
+    font-style: italic;
+    line-height: 1.55;
+    max-width: 520px;
+  }
+
+  .mt-fractal {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 8px;
   }
 
-  .node-bayes {
+  /* step colors */
+  .geo-color { color: var(--geo-col); }
+  .tmves-color { color: var(--tmves-col); }
+  .sib-color { color: var(--sib-col); }
+  .eta-color { color: var(--eta-col); }
+  .gap-color { color: var(--gap-col); }
+
+  .geo-tag { background: #ff996614; border: 1px solid #ff996630; color: var(--geo-col); }
+  .tmves-tag { background: #c8b8ff14; border: 1px solid #c8b8ff30; color: var(--tmves-col); }
+  .sib-tag { background: #6bcfff14; border: 1px solid #6bcfff30; color: var(--sib-col); }
+  .eta-tag { background: #ff6b6b14; border: 1px solid #ff6b6b30; color: var(--eta-col); }
+  .gap-tag { background: #6bffb814; border: 1px solid #6bffb830; color: var(--gap-col); }
+
+  /* FRACTAL INSIGHT BOX */
+  .fractal-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 28px 32px;
+    margin: 32px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fractal-box::after {
+    content: 'GEO→TMVES→SIB→ETA→GAP';
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: #ffffff03;
+    letter-spacing: 6px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .fractal-box.method-fractal { border-left-color: var(--method-col); }
+
+  .fractal-box p {
+    color: #c8c4d8;
+    font-size: 17px;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .fractal-box p strong { color: var(--text); font-weight: 600; }
+
+  .fractal-chain {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 20px 0 8px;
+    flex-wrap: wrap;
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 8px;
+    font-size: 13px;
   }
 
-  .node-desc {
-    font-size: 13px;
-    color: #888;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    line-height: 1.4;
+  .fc-node {
+    padding: 6px 14px;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 1px;
   }
+
+  .fc-arrow {
+    color: var(--muted);
+    padding: 0 6px;
+    font-size: 16px;
+  }
+
+  .fc-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 2px;
+    display: block;
+    text-align: center;
+  }
+
+  .fc-wrap { text-align: center; }
+
+  /* PENTAD */
+  .pentad-table-wrap {
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .pentad-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .pentad-table thead tr { background: var(--bg3); border-bottom: 2px solid var(--border); }
+  .pentad-table thead th {
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .pentad-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .pentad-table tbody tr:last-child { border-bottom: none; }
+  .pentad-table tbody tr:hover { background: var(--bg3); }
+  .pentad-table tbody tr.grey-row { opacity: 0.6; }
+  .pentad-table tbody tr.grey-row:hover { opacity: 0.85; background: var(--bg3); }
+
+  .pentad-table td { padding: 16px 18px; vertical-align: middle; }
+
+  .pt-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    text-align: center;
+    width: 50px;
+  }
+
+  .pt-name { font-size: 13px; font-weight: 500; letter-spacing: 1px; min-width: 90px; }
+  .pt-bayes { color: var(--muted); font-size: 11px; min-width: 130px; }
+  .pt-role { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; color: #9994b0; }
+
+  .pt-policy-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .grey-badge { background: #88889915; border: 1px solid #88889930; color: var(--grey); }
+  .active-badge { background: #6bcfff12; border: 1px solid #6bcfff30; color: var(--v-col); font-size: 9px; letter-spacing: 1.5px; }
+  .m-badge { background: #ffd93d12; border: 1px solid #ffd93d30; color: var(--m-col); font-size: 9px; letter-spacing: 1.5px; }
 
   .t-color { color: var(--t-col); }
   .m-color { color: var(--m-col); }
   .v-color { color: var(--v-col); }
   .e-color { color: var(--e-col); }
   .s-color { color: var(--s-col); }
-  .method-color { color: var(--method-col); }
 
   /* SCALE TABLE */
   .scale-grid {
@@ -291,100 +472,31 @@
     font-size: 13px;
   }
 
-  .sg-head {
-    background: var(--bg3);
-    padding: 12px 16px;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .sg-cell {
-    background: var(--bg2);
-    padding: 14px 16px;
-    color: var(--text);
-  }
-
+  .sg-head { background: var(--bg3); padding: 12px 16px; color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  .sg-cell { background: var(--bg2); padding: 14px 16px; color: var(--text); }
   .sg-cell.muted { color: var(--muted); }
   .sg-num { color: var(--accent3); font-weight: 500; text-align: center; }
   .sg-num.method-num { color: var(--method-col); }
-
   .sg-cell.method-cell { color: var(--method-col); }
   .sg-cell.method-desc { color: var(--muted); font-style: italic; }
 
-  /* METHOD GRID */
-  .method-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 32px 0;
-  }
-
-  .method-card {
+  /* INSIGHT */
+  .insight {
     background: var(--bg2);
-    padding: 28px 28px;
-    position: relative;
-    transition: background 0.2s;
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
   }
 
-  .method-card:hover { background: var(--bg3); }
+  .insight.v-insight { border-color: var(--v-col); }
+  .insight.grey-insight { border-color: var(--grey); }
+  .insight.method-insight { border-color: var(--method-col); }
 
-  .method-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--method-col);
-    opacity: 0.4;
-  }
+  .insight p { color: #c8c4d8; font-size: 17px; margin: 0; max-width: 100%; }
+  .insight p strong { color: var(--text); font-weight: 600; }
 
-  .method-card.primary::before { opacity: 1; }
-
-  .method-key {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--method-col);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-  }
-
-  .method-code {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--accent2);
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 3px 8px;
-    display: inline-block;
-    margin-bottom: 14px;
-    letter-spacing: 1px;
-  }
-
-  .method-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--text);
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
-
-  .method-desc {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    color: var(--muted);
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  /* MAIN TABLE */
+  /* MAIN TWIN TABLE */
   .twin-table-wrap {
     overflow-x: auto;
     margin: 32px 0;
@@ -392,59 +504,17 @@
     border-radius: 4px;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-  }
-
-  thead tr {
-    background: var(--bg3);
-    border-bottom: 2px solid var(--border);
-  }
-
-  thead th {
-    padding: 14px 16px;
-    text-align: left;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
+  table { width: 100%; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 12px; }
+  thead tr { background: var(--bg3); border-bottom: 2px solid var(--border); }
+  thead th { padding: 14px 16px; text-align: left; color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
   tbody tr:hover { background: var(--bg3); }
-
-  tbody tr.grey-row {
-    opacity: 0.55;
-  }
-
+  tbody tr.grey-row { opacity: 0.55; }
   tbody tr.grey-row:hover { opacity: 0.8; background: var(--bg3); }
-
-  td {
-    padding: 12px 16px;
-    vertical-align: top;
-    color: var(--text);
-  }
-
+  td { padding: 12px 16px; vertical-align: top; color: var(--text); }
   td.num { color: var(--muted); text-align: center; }
-
-  td.readable {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    color: #c8c4d8;
-    min-width: 200px;
-  }
-
-  td.code {
-    white-space: nowrap;
-  }
+  td.readable { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: #c8c4d8; min-width: 200px; }
+  td.code { white-space: nowrap; }
 
   .code-pill {
     display: inline-block;
@@ -472,161 +542,42 @@
   .badge-e { background: #c8b8ff15; color: var(--e-col); border: 1px solid #c8b8ff30; }
   .badge-s { background: #6bffb815; color: var(--s-col); border: 1px solid #6bffb830; }
 
-  td.notes {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    color: var(--muted);
-    font-style: italic;
-    min-width: 180px;
-  }
+  td.notes { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--muted); font-style: italic; min-width: 180px; }
+  td.grey-note { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--grey); }
 
-  td.grey-note {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: var(--grey);
-  }
-
-  /* FILTER BAR */
-  .filter-bar {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    align-items: center;
-  }
-
-  .filter-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-right: 4px;
-  }
-
-  .filter-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 5px 14px;
-    border-radius: 2px;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    color: var(--muted);
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: all 0.15s;
-  }
-
-  .filter-btn:hover, .filter-btn.active {
-    background: var(--bg3);
-    color: var(--text);
-    border-color: var(--accent);
-  }
-
+  /* FILTER */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .filter-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-right: 4px; }
+  .filter-btn { font-family: 'DM Mono', monospace; font-size: 11px; padding: 5px 14px; border-radius: 2px; border: 1px solid var(--border); background: var(--bg2); color: var(--muted); cursor: pointer; letter-spacing: 1px; transition: all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { background: var(--bg3); color: var(--text); border-color: var(--accent); }
   .filter-btn.active.ft { border-color: var(--t-col); color: var(--t-col); }
   .filter-btn.active.fm { border-color: var(--m-col); color: var(--m-col); }
   .filter-btn.active.fv { border-color: var(--v-col); color: var(--v-col); }
   .filter-btn.active.fe { border-color: var(--e-col); color: var(--e-col); }
   .filter-btn.active.fs { border-color: var(--s-col); color: var(--s-col); }
 
-  /* INSIGHT BOX */
-  .insight {
-    background: var(--bg2);
-    border-left: 3px solid var(--accent);
-    padding: 24px 28px;
-    margin: 24px 0;
-    border-radius: 0 4px 4px 0;
-  }
+  /* FLOW */
+  .flow { display: flex; align-items: center; gap: 0; margin: 32px 0; flex-wrap: wrap; }
+  .flow-node { background: var(--bg2); border: 1px solid var(--border); padding: 16px 20px; text-align: center; flex: 1; min-width: 100px; position: relative; }
+  .flow-node .fn-letter { font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; }
+  .flow-node .fn-bayes { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .flow-arrow { color: var(--muted); font-size: 20px; padding: 0 4px; font-family: 'DM Mono', monospace; }
+  .flow-node.active-node { border-color: var(--v-col); background: #6bcfff08; }
 
-  .insight.v-insight { border-color: var(--v-col); }
-  .insight.grey-insight { border-color: var(--grey); }
-  .insight.method-insight { border-color: var(--method-col); }
-
-  .insight p {
-    color: #c8c4d8;
-    font-size: 17px;
-    margin: 0;
-    max-width: 100%;
-  }
-
-  .insight p strong {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  /* FLOW DIAGRAM */
-  .flow {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin: 32px 0;
-    flex-wrap: wrap;
-  }
-
-  .flow-node {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 16px 20px;
-    text-align: center;
-    flex: 1;
-    min-width: 100px;
-    position: relative;
-  }
-
-  .flow-node .fn-letter {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    line-height: 1;
-  }
-
-  .flow-node .fn-bayes {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  .flow-arrow {
-    color: var(--muted);
-    font-size: 20px;
-    padding: 0 4px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .flow-node.active-node {
-    border-color: var(--v-col);
-    background: #6bcfff08;
-  }
-
-  /* FOOTER */
   footer {
     padding: 40px 60px;
     background: var(--bg2);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: gap;
     border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
-  .footer-brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-style: italic;
-    color: var(--accent);
-  }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--accent); }
+  .footer-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: right; line-height: 1.8; }
 
-  .footer-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    text-align: right;
-    line-height: 1.8;
-  }
-
-  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -640,17 +591,17 @@
 
   @media (max-width: 768px) {
     header, section, footer { padding: 40px 24px; }
-    .pentad { grid-template-columns: 1fr 1fr; }
-    .pentad-node:last-child { grid-column: span 2; }
     h1 { font-size: 36px; }
-    .method-grid { grid-template-columns: 1fr; }
+    .method-table td { padding: 14px 12px; }
+    .scale-grid { grid-template-columns: 50px 1fr 1fr; }
+    .scale-grid .sg-cell:nth-child(4n), .scale-grid .sg-head:nth-child(4) { display: none; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.1</div>
+  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.2</div>
   <h1 class="animate delay-2">Digital Twin<br><em>Naming Convention</em></h1>
   <div class="subtitle animate delay-3">ukb-{scale}-{domain}-{tmves}-dt-v{version} &nbsp;·&nbsp; Bayesian-Aware · Pentadic · Sovereign</div>
 </header>
@@ -662,52 +613,146 @@
 
   <p>Before any clinical twin can be named, before any scale from 1 to 5 is chosen, there is a prior question: <em>what is the shape of the space being navigated?</em> Scale 0 is the method layer — cross-cutting, scale-invariant, the epistemological substrate on which every twin in this catalog sits.</p>
 
-  <p>Method artifacts do not describe a patient, a network, or a civilization. They describe the <em>rules of inference</em> that apply to all of them equally. The geodesic is the same whether you are walking through a 29-year-old's diagnostic landscape or through 47 years of Middle East geopolitics. The learning rate doctrine is the same whether the irreversible step is a mastectomy or a military strike. Scale 0 is where those invariants live.</p>
+  <p>The five method artifacts are not arbitrary — they unfold in a deliberate sequence that mirrors the pentad itself. Read the order: it is the fractal.</p>
 
-  <div class="insight method-insight">
-    <p><strong>Scale 0 is the only scale with a shared URL stem.</strong> All method artifacts live at <span style="font-family:'DM Mono',monospace; color:var(--accent2); font-size:15px;">ukb-0-method-{key}-dt-v{nn}</span> — differentiated only by the domain key. The geometry is invariant. The content changes. The address stays home.</p>
+  <!-- FRACTAL CHAIN -->
+  <div class="fractal-box method-fractal">
+    <p><strong>The method sequence is the TMVES chain applied to itself.</strong> Each method answers the question the previous one opens. geo names the territory; tmves compresses it into a navigable coordinate; sib confronts the wall inside that coordinate; eta governs movement through it; gap inherits what is already pre-computed. Territory → Perspective → Wall → Movement → Inheritance. Scale 0 folded back on Scale 0.</p>
+    <div class="fractal-chain">
+      <div class="fc-wrap">
+        <div class="fc-node geo-tag">GEO</div>
+        <span class="fc-sub">territory</span>
+      </div>
+      <div class="fc-arrow">→</div>
+      <div class="fc-wrap">
+        <div class="fc-node tmves-tag">TMVES</div>
+        <span class="fc-sub">compression</span>
+      </div>
+      <div class="fc-arrow">→</div>
+      <div class="fc-wrap">
+        <div class="fc-node sib-tag">SIB</div>
+        <span class="fc-sub">wall</span>
+      </div>
+      <div class="fc-arrow">→</div>
+      <div class="fc-wrap">
+        <div class="fc-node eta-tag">ETA</div>
+        <span class="fc-sub">movement</span>
+      </div>
+      <div class="fc-arrow">→</div>
+      <div class="fc-wrap">
+        <div class="fc-node gap-tag">GAP</div>
+        <span class="fc-sub">inheritance</span>
+      </div>
+    </div>
   </div>
 
-  <div class="method-grid">
+  <!-- METHOD TABLE -->
+  <div class="method-table-wrap">
+    <table class="method-table">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Key · Code</th>
+          <th>Method</th>
+          <th>What it answers</th>
+        </tr>
+      </thead>
+      <tbody>
 
-    <div class="method-card primary">
-      <div class="method-key">geo · master method</div>
-      <div class="method-code">ukb-0-method-geo-dt-v00</div>
-      <div class="method-title">Geodesic navigation on the patient manifold</div>
-      <div class="method-desc">The patient is θ ∈ 𝓜 — a situated point on a curved historical surface. The clinician's task is to find the path of least curvature-weighted distance through the diagnostic landscape. That path is the geodesic. SGD is one algorithm for approximating it. The geodesic is what it approximates.</div>
-    </div>
+        <tr>
+          <td class="mt-step geo-color">①</td>
+          <td class="mt-key">
+            <div class="mt-key-inner geo-color">GEO</div>
+            <div class="mt-code">ukb-0-method-geo-dt-v00</div>
+            <div class="mt-fractal geo-tag" style="margin-top:10px;">Territory</div>
+          </td>
+          <td>
+            <div class="mt-title">Geodesic navigation on the patient manifold</div>
+            <div class="mt-bayes">𝓜 · curved historical surface · P(path | θ)</div>
+            <div class="mt-desc">The patient is θ ∈ 𝓜 — a situated point on a curved historical surface. The territory is not flat. ℝⁿ is a special case of 𝓜 with history assumed away. The clinician's task is to find the path of least curvature-weighted distance through the diagnostic landscape. That path is the geodesic. Every other method is a tool for navigating it.</div>
+          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0; min-width:160px;">
+            <em>What is the shape of the space we are moving through?</em>
+          </td>
+        </tr>
 
-    <div class="method-card">
-      <div class="method-key">tmves · inference chain</div>
-      <div class="method-code">ukb-0-method-tmves-dt-v00</div>
-      <div class="method-title">The pentadic Bayesian chain</div>
-      <div class="method-desc">T → M → V → E → S as P(θ_t) → P(D|θ_t) → P(D) → P(θ|D) → P(θ_{t+1}). The five-node architecture that every twin inhabits. The chain is the method. The node code in the identifier declares current position.</div>
-    </div>
+        <tr>
+          <td class="mt-step tmves-color">②</td>
+          <td class="mt-key">
+            <div class="mt-key-inner tmves-color">TMVES</div>
+            <div class="mt-code">ukb-0-method-tmves-dt-v00</div>
+            <div class="mt-fractal tmves-tag" style="margin-top:10px;">Compression</div>
+          </td>
+          <td>
+            <div class="mt-title">The pentadic Bayesian chain — perspectivism from the PFC</div>
+            <div class="mt-bayes">T→M→V→E→S · P(θ_t)→P(D|θ_t)→P(D)→P(θ|D)→P(θ_{t+1})</div>
+            <div class="mt-desc">TMVES is the compression matrix. The manifold 𝓜 is infinite-dimensional; no clinician or system can hold it whole. The five-node chain is what the prefrontal cortex does: it selects a perspective, a coordinate system, a lossy projection of the territory into something navigable. M is specifically the <em>compression matrix</em> — it encodes what data to expect given the prior, which is the same act as choosing what to measure. Gradient descent on the manifold is treatment: it preserves the eigenmode (E), the patient's essential identity, while correcting the trajectory.</div>
+          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
+            <em>How do we compress the territory into a navigable coordinate system?</em>
+          </td>
+        </tr>
 
-    <div class="method-card">
-      <div class="method-key">eta · irreversibility doctrine</div>
-      <div class="method-code">ukb-0-method-eta-dt-v00</div>
-      <div class="method-title">The catastrophic learning rate</div>
-      <div class="method-desc">η must be proportional to reversibility. An irreversible step at incomplete evidence is η = ∞ on an unmapped landscape. The gate condition: max(L) > 0.85, tissue confirmation obtained, N_completeness > 0.90. The S-node does not fire before the E-node resolves.</div>
-    </div>
+        <tr>
+          <td class="mt-step sib-color">③</td>
+          <td class="mt-key">
+            <div class="mt-key-inner sib-color">SIB</div>
+            <div class="mt-code">ukb-0-method-sib-dt-v00</div>
+            <div class="mt-fractal sib-tag" style="margin-top:10px;">Wall · V-node</div>
+          </td>
+          <td>
+            <div class="mt-title">Sovereign Intelligence Broker</div>
+            <div class="mt-bayes">V-node tool · P(D) under governance constraints</div>
+            <div class="mt-desc">Once TMVES has given us coordinates, the V-node is where medicine keeps failing. HIPAA, GDPR, stigma, siloed labs, institutional fear — these are not data problems, they are sovereignty failures at the V-node. The SIB is the specific tool built for this node: it treats inaccessible data as a <em>constrained prior</em> rather than a missing input. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference. The wall is inside the compression, which is inside the geodesic.</div>
+          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
+            <em>What do we do when the data we need is behind a governance wall?</em>
+          </td>
+        </tr>
 
-    <div class="method-card">
-      <div class="method-key">sib · sovereignty tool</div>
-      <div class="method-code">ukb-0-method-sib-dt-v00</div>
-      <div class="method-title">Sovereign Intelligence Broker</div>
-      <div class="method-desc">The V-node tool. Where data is locked, feared, or siloed, the SIB treats inaccessible data as a constrained prior rather than a missing input. Missing data = wide prior, not a dead end. The wall constrains the posterior — it does not kill inference.</div>
-    </div>
+        <tr>
+          <td class="mt-step eta-color">④</td>
+          <td class="mt-key">
+            <div class="mt-key-inner eta-color">ETA</div>
+            <div class="mt-code">ukb-0-method-eta-dt-v00</div>
+            <div class="mt-fractal eta-tag" style="margin-top:10px;">Movement</div>
+          </td>
+          <td>
+            <div class="mt-title">The catastrophic learning rate — irreversibility doctrine</div>
+            <div class="mt-bayes">η ∝ 1/λᵢ · irreversibility-weighted step size</div>
+            <div class="mt-desc">We are on the geodesic, we have our compressed coordinates, we have threaded the V-node wall — now: how fast do we move? η must be proportional to reversibility. An irreversible step at incomplete evidence is η = ∞ on an unmapped landscape: it blows up the loss. The gate condition: max(L) &gt; 0.85, tissue confirmation obtained, N_completeness &gt; 0.90. The S-node does not fire before the E-node resolves. Treatment (gradient descent) must preserve the eigenmode — the thing about this patient that must not be destroyed in the correction.</div>
+          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
+            <em>How fast can we move on the geodesic without destroying what we are trying to preserve?</em>
+          </td>
+        </tr>
 
-    <div class="method-card" style="grid-column: span 2;">
-      <div class="method-key">gap · inherited scalars</div>
-      <div class="method-code">ukb-0-method-gap-dt-v00</div>
-      <div class="method-title">Grey Aware Policy</div>
-      <div class="method-desc">Some geodesics are already known. When the manifold is so well-mapped at the population level that the path is pre-computed — tPA yes/no, MUAC thresholds, ABCDE trauma chain — the individual twin inherits the scalar rather than re-running the full M→V→E sequence. Grey Aware Policy is the doctrine governing when that inheritance is valid and when it must yield to individual curvature. It is the fast path. The geodesic is the slow path. Both are necessary.</div>
-    </div>
+        <tr>
+          <td class="mt-step gap-color">⑤</td>
+          <td class="mt-key">
+            <div class="mt-key-inner gap-color">GAP</div>
+            <div class="mt-code">ukb-0-method-gap-dt-v00</div>
+            <div class="mt-fractal gap-tag" style="margin-top:10px;">Inheritance</div>
+          </td>
+          <td>
+            <div class="mt-title">Grey Aware Policy — inherited scalars</div>
+            <div class="mt-bayes">Fast path · pre-computed geodesics · T and S nodes</div>
+            <div class="mt-desc">Some geodesics are already known. When the manifold is so well-mapped at the population level that the path is pre-computed — tPA yes/no, MUAC thresholds, ABCDE trauma chain — the individual twin inherits the scalar rather than re-running the full M→V→E sequence. GAP is the doctrine governing when that inheritance is valid and when it must yield to individual curvature. It is the fast path. The geodesic is the slow path. Both are necessary. GAP answers the question that only arises <em>after</em> you have understood the geodesic, the compression, the wall, and the permitted step size.</div>
+          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
+            <em>When is the geodesic already computed, and can we inherit it rather than re-derive it?</em>
+          </td>
+        </tr>
 
+      </tbody>
+    </table>
   </div>
 
   <p style="color: var(--muted); font-size: 15px; font-style: italic; font-family: 'Cormorant Garamond', serif;">The organ at Kings College Budo was computing geodesics on an acoustic manifold. Psalm 23 named the master geodesic before the vocabulary existed. ℝⁿ is 𝓜 with history assumed away — the special case, not the general one.</p>
+
+  <div class="insight method-insight">
+    <p><strong>Scale 0 is the only scale with a shared URL stem.</strong> All method artifacts live at <span style="font-family:'DM Mono',monospace; color:var(--accent2); font-size:15px;">ukb-0-method-{key}-dt-v{nn}</span> — differentiated only by the method key. The geometry is invariant. The content changes. The address stays home.</p>
+  </div>
 </section>
 
 <!-- SECTION 1: THE SCHEMA -->
@@ -761,45 +806,63 @@
 
   <p>The five TMVES nodes map exactly onto the Bayesian inference chain. The twin's TMVES code declares which node it primarily inhabits — where its intelligence lives, and where it applies leverage on the clinical decision.</p>
 
-  <div class="pentad">
-    <div class="pentad-node grey-aware">
-      <div class="node-letter t-color">T</div>
-      <div class="node-name">Tensor</div>
-      <div class="node-bayes">P(θ_t)</div>
-      <div class="node-desc">The accumulated prior. Civilization, population, policy.</div>
-    </div>
-    <div class="pentad-node">
-      <div class="node-letter m-color">M</div>
-      <div class="node-name">Matrix</div>
-      <div class="node-bayes">P(D|θ_t)</div>
-      <div class="node-desc">Study design. What data would you expect, given that prior?</div>
-    </div>
-    <div class="pentad-node" style="border: 1px solid var(--v-col)20; background: #6bcfff04;">
-      <div class="node-letter v-color">V</div>
-      <div class="node-name">Vector</div>
-      <div class="node-bayes">P(D)</div>
-      <div class="node-desc">The data itself. The governance wall. Sovereignty lives here.</div>
-    </div>
-    <div class="pentad-node">
-      <div class="node-letter e-color">E</div>
-      <div class="node-name">Eigenmode</div>
-      <div class="node-bayes">P(θ|D)</div>
-      <div class="node-desc">The posterior. Identity updated by evidence.</div>
-    </div>
-    <div class="pentad-node grey-aware">
-      <div class="node-letter s-color">S</div>
-      <div class="node-name">Scalar</div>
-      <div class="node-bayes">P(θ_{t+1})</div>
-      <div class="node-desc">The decision. The loop closes. Prior updates.</div>
-    </div>
+  <div class="pentad-table-wrap">
+    <table class="pentad-table">
+      <thead>
+        <tr>
+          <th>Node</th>
+          <th>Name</th>
+          <th>Bayesian role</th>
+          <th>What it does · where the intelligence lives</th>
+          <th>Policy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="grey-row">
+          <td class="pt-letter t-color">T</td>
+          <td class="pt-name t-color">Tensor</td>
+          <td class="pt-bayes">P(θ_t)<br>The accumulated prior</td>
+          <td class="pt-role">Civilization, population, clinical guidelines. The territory as inherited from population science. Sparse in the twin catalog because it is inherited, not computed fresh — the T-node is where GAP lives. Family history, germline risk, herd immunity thresholds, MUAC cutoffs.</td>
+          <td><span class="pt-policy-badge grey-badge">Grey Aware</span></td>
+        </tr>
+        <tr>
+          <td class="pt-letter m-color">M</td>
+          <td class="pt-name m-color">Matrix</td>
+          <td class="pt-bayes">P(D|θ_t)<br>Likelihood · study design</td>
+          <td class="pt-role">The compression matrix. Given the prior, what data would you expect? This is simultaneously the study design question (which labs to order, which imaging, which contacts to trace) and the PFC perspectivism act: choosing a coordinate system to project the manifold into. M is where clinical intelligence is designed.</td>
+          <td><span class="pt-policy-badge m-badge">Compression</span></td>
+        </tr>
+        <tr>
+          <td class="pt-letter v-color">V</td>
+          <td class="pt-name v-color">Vector</td>
+          <td class="pt-bayes">P(D)<br>The data itself</td>
+          <td class="pt-role">The actual data — and the governance wall that surrounds it. HIPAA, GDPR, stigma, siloed labs, institutional fear. This is where medicine keeps failing. The SIB is specifically a V-node tool. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference.</td>
+          <td><span class="pt-policy-badge active-badge">SIB Lives Here</span></td>
+        </tr>
+        <tr>
+          <td class="pt-letter e-color">E</td>
+          <td class="pt-name e-color">Eigen&shy;mode</td>
+          <td class="pt-bayes">P(θ|D)<br>The posterior</td>
+          <td class="pt-role">Identity updated by evidence. The eigenmode is what treatment must preserve — gradient descent (clinical intervention) corrects the trajectory while keeping the patient's essential identity intact. When E is resolved, the irreversibility gate opens. The E-node is the destination of the inference chain.</td>
+          <td>—</td>
+        </tr>
+        <tr class="grey-row">
+          <td class="pt-letter s-color">S</td>
+          <td class="pt-name s-color">Scalar</td>
+          <td class="pt-bayes">P(θ_{t+1})<br>The decision</td>
+          <td class="pt-role">The clinical scalar: tPA yes/no, refer vs operate, which drug at which dose. Once E is good, S is often a one-liner — which is the point. The loop closes. The prior updates. S is sparse in the twin catalog by design: don't reinvent the decision when the eigenmode has already resolved it. GAP governs this node too.</td>
+          <td><span class="pt-policy-badge grey-badge">Grey Aware</span></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="insight grey-insight">
-    <p><strong>T and S are Grey Aware Policy.</strong> The prior (T) is set by population science, civilization-scale data, clinical guidelines — sparse in the twin catalog because it is inherited, not computed fresh. The decision (S) is the clinical scalar: tPA yes/no, refer vs operate. Once E is good, S is often a one-liner. The intelligence lives in M, V, and E. The governance failure lives at V.</p>
+    <p><strong>T and S are Grey Aware Policy.</strong> The prior (T) is set by population science. The decision (S) is the clinical scalar. The intelligence lives in M, V, and E. The governance failure lives at V. Don't reinvent the prior, don't delay the scalar.</p>
   </div>
 
   <div class="insight v-insight">
-    <p><strong>V is where medicine keeps failing.</strong> HIPAA, GDPR, stigma, siloed labs, institutional fear — these are not data problems. They are V-node sovereignty failures. The decentralized Sovereign Intelligence Broker is specifically a V-node tool. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference.</p>
+    <p><strong>V is where medicine keeps failing.</strong> The decentralized Sovereign Intelligence Broker is specifically a V-node tool. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference.</p>
   </div>
 </section>
 
@@ -816,7 +879,7 @@
 
     <div class="sg-cell sg-num method-num">0</div>
     <div class="sg-cell method-cell">Method</div>
-    <div class="sg-cell method-desc">Short key · geo · eta · tmves · sib · gap</div>
+    <div class="sg-cell method-desc">Short key · geo · tmves · sib · eta · gap</div>
     <div class="sg-cell method-desc">ukb-0-method-geo-dt-v00</div>
 
     <div class="sg-cell sg-num">1</div>
@@ -938,7 +1001,7 @@
   <p>The body twin is hard — every disease rewrites the schema. The mind twin is tractable — the architecture is invariant. The weights are everything.</p>
 
   <div class="flow">
-    <div class="flow-node grey-aware" style="opacity:0.6">
+    <div class="flow-node" style="opacity:0.6">
       <div class="fn-letter t-color">T</div>
       <div class="fn-bayes">P(θ_t)</div>
     </div>
@@ -958,7 +1021,7 @@
       <div class="fn-bayes">P(θ|D)</div>
     </div>
     <div class="flow-arrow">→</div>
-    <div class="flow-node grey-aware" style="opacity:0.6">
+    <div class="flow-node" style="opacity:0.6">
       <div class="fn-letter s-color">S</div>
       <div class="fn-bayes">P(θ_{t+1})</div>
     </div>
@@ -970,9 +1033,9 @@
 <footer>
   <div class="footer-brand">Ukubona</div>
   <div class="footer-meta">
-    ukb-naming-convention-v1.1<br>
+    ukb-naming-convention-v1.2<br>
     Kampala, Uganda · 2026<br>
-    0 · T → M → V → E → S ↺ U(s)
+    geo → tmves → sib → eta → gap ↺
   </div>
 </footer>
 
@@ -980,18 +1043,12 @@
   function filterTable(node, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     const rows = document.querySelectorAll('#twinTable tbody tr');
     rows.forEach(row => {
-      if (node === 'all') {
-        row.style.display = '';
-      } else {
-        row.style.display = row.dataset.node === node ? '' : 'none';
-      }
+      row.style.display = (node === 'all' || row.dataset.node === node) ? '' : 'none';
     });
   }
 
-  // Stagger table row reveals
   document.addEventListener('DOMContentLoaded', () => {
     const rows = document.querySelectorAll('#twinTable tbody tr');
     rows.forEach((row, i) => {
@@ -1007,4 +1064,4 @@
 </script>
 
 </body>
-</html>    
+</html>
