@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ukubona — Digital Twin Naming Convention</title>
+<title>Ukubona — Digital Twin Naming Convention v1.3</title>
+    <!-- Icons -->
+    <link rel="icon" href="https://abikesa.github.io/favicon/assets/favicon-light.ico" />
+    <link rel="icon" href="https://abikesa.github.io/favicon/assets/favicon-dark.ico"
+          media="(prefers-color-scheme: dark)" />
+
+    <!-- Logo preloads -->
+    <link rel="preload" href="https://abikesa.github.io/logos/assets/ukubona-light.png" as="image" />
+    <link rel="preload" href="https://abikesa.github.io/logos/assets/ukubona-dark.png" as="image" />
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -28,6 +37,12 @@
     --sib-col: #6bcfff;
     --eta-col: #ff6b6b;
     --gap-col: #6bffb8;
+
+    /* NEW: Scale 4/5 ontology colors */
+    --who-col: #f4a261;
+    --iso-col: #90e0ef;
+    --unsd-col: #a8dadc;
+    --sdg-col: #e9c46a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -98,6 +113,30 @@
     color: var(--muted);
     font-family: 'DM Mono', monospace;
     letter-spacing: 1px;
+  }
+
+  .version-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .v-old { color: var(--muted); text-decoration: line-through; }
+  .v-arrow { color: var(--accent2); }
+  .v-new { color: var(--accent2); font-weight: 500; }
+  .v-badge {
+    display: inline-block;
+    background: #7fffd415;
+    border: 1px solid #7fffd430;
+    color: var(--accent2);
+    padding: 2px 10px;
+    border-radius: 2px;
+    font-size: 10px;
+    letter-spacing: 2px;
   }
 
   section {
@@ -182,7 +221,75 @@
   .legend-key { font-weight: 500; min-width: 80px; color: var(--text); }
   .legend-val { color: var(--muted); line-height: 1.5; }
 
-  /* METHOD TABLE — the main new element */
+  /* MULTI-ONTOLOGY BRIDGE TABLE */
+  .bridge-table-wrap {
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bridge-table-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--v-col), var(--m-col), var(--who-col), var(--iso-col), var(--sdg-col));
+  }
+
+  .bridge-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .bridge-table thead tr { background: var(--bg3); border-bottom: 2px solid var(--border); }
+  .bridge-table thead th {
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .bridge-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .bridge-table tbody tr:last-child { border-bottom: none; }
+  .bridge-table tbody tr:hover { background: var(--bg3); }
+  .bridge-table td { padding: 16px 18px; vertical-align: middle; }
+
+  .bt-scale {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    width: 50px;
+    text-align: center;
+  }
+
+  .bt-entity { font-weight: 500; font-size: 13px; letter-spacing: 1px; }
+  .bt-onto { font-size: 11px; letter-spacing: 1px; }
+  .bt-why { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; color: #9994b0; }
+  .bt-example { color: var(--accent2); font-size: 11px; }
+
+  .onto-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 2px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .icd-badge { background: #6bcfff14; border: 1px solid #6bcfff30; color: var(--v-col); }
+  .who-badge { background: #f4a26114; border: 1px solid #f4a26130; color: var(--who-col); }
+  .iso-badge { background: #90e0ef14; border: 1px solid #90e0ef30; color: var(--iso-col); }
+  .sdg-badge { background: #e9c46a14; border: 1px solid #e9c46a30; color: var(--sdg-col); }
+  .method-onto-badge { background: #e8c87a14; border: 1px solid #e8c87a30; color: var(--method-col); }
+
+  /* METHOD TABLE */
   .method-table-wrap {
     margin: 32px 0;
     border: 1px solid var(--border);
@@ -206,11 +313,7 @@
     font-size: 12px;
   }
 
-  .method-table thead tr {
-    background: var(--bg3);
-    border-bottom: 2px solid var(--border);
-  }
-
+  .method-table thead tr { background: var(--bg3); border-bottom: 2px solid var(--border); }
   .method-table thead th {
     padding: 13px 18px;
     text-align: left;
@@ -221,18 +324,10 @@
     white-space: nowrap;
   }
 
-  .method-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
+  .method-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
   .method-table tbody tr:last-child { border-bottom: none; }
   .method-table tbody tr:hover { background: var(--bg3); }
-
-  .method-table td {
-    padding: 18px 18px;
-    vertical-align: top;
-  }
+  .method-table td { padding: 18px 18px; vertical-align: top; }
 
   .mt-step {
     font-family: 'Bebas Neue', sans-serif;
@@ -243,18 +338,8 @@
     padding-top: 20px;
   }
 
-  .mt-key {
-    white-space: nowrap;
-    min-width: 80px;
-  }
-
-  .mt-key-inner {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-
+  .mt-key { white-space: nowrap; min-width: 80px; }
+  .mt-key-inner { font-size: 13px; font-weight: 500; letter-spacing: 1px; margin-bottom: 4px; }
   .mt-code {
     display: inline-block;
     background: var(--bg3);
@@ -267,32 +352,9 @@
     margin-top: 4px;
   }
 
-  .mt-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
-    font-weight: 400;
-    line-height: 1.3;
-    margin-bottom: 8px;
-    min-width: 220px;
-  }
-
-  .mt-bayes {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-  }
-
-  .mt-desc {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
-    color: #9994b0;
-    font-style: italic;
-    line-height: 1.55;
-    max-width: 520px;
-  }
-
+  .mt-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; line-height: 1.3; margin-bottom: 8px; min-width: 220px; }
+  .mt-bayes { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 6px; letter-spacing: 1px; }
+  .mt-desc { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #9994b0; font-style: italic; line-height: 1.55; max-width: 520px; }
   .mt-fractal {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -305,7 +367,6 @@
     margin-top: 8px;
   }
 
-  /* step colors */
   .geo-color { color: var(--geo-col); }
   .tmves-color { color: var(--tmves-col); }
   .sib-color { color: var(--sib-col); }
@@ -318,7 +379,7 @@
   .eta-tag { background: #ff6b6b14; border: 1px solid #ff6b6b30; color: var(--eta-col); }
   .gap-tag { background: #6bffb814; border: 1px solid #6bffb830; color: var(--gap-col); }
 
-  /* FRACTAL INSIGHT BOX */
+  /* FRACTAL BOX */
   .fractal-box {
     background: var(--bg2);
     border: 1px solid var(--border);
@@ -345,14 +406,9 @@
   }
 
   .fractal-box.method-fractal { border-left-color: var(--method-col); }
-
-  .fractal-box p {
-    color: #c8c4d8;
-    font-size: 17px;
-    margin: 0;
-    max-width: 100%;
-  }
-
+  .fractal-box.iso-fractal { border-left-color: var(--iso-col); }
+  .fractal-box.sdg-fractal { border-left-color: var(--sdg-col); }
+  .fractal-box p { color: #c8c4d8; font-size: 17px; margin: 0; max-width: 100%; }
   .fractal-box p strong { color: var(--text); font-weight: 600; }
 
   .fractal-chain {
@@ -365,89 +421,29 @@
     font-size: 13px;
   }
 
-  .fc-node {
-    padding: 6px 14px;
-    border-radius: 3px;
-    font-weight: 500;
-    letter-spacing: 1px;
-  }
-
-  .fc-arrow {
-    color: var(--muted);
-    padding: 0 6px;
-    font-size: 16px;
-  }
-
-  .fc-sub {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-top: 2px;
-    display: block;
-    text-align: center;
-  }
-
+  .fc-node { padding: 6px 14px; border-radius: 3px; font-weight: 500; letter-spacing: 1px; }
+  .fc-arrow { color: var(--muted); padding: 0 6px; font-size: 16px; }
+  .fc-sub { font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-top: 2px; display: block; text-align: center; }
   .fc-wrap { text-align: center; }
 
   /* PENTAD */
-  .pentad-table-wrap {
-    margin: 32px 0;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .pentad-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-  }
-
+  .pentad-table-wrap { margin: 32px 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .pentad-table { width: 100%; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 12px; }
   .pentad-table thead tr { background: var(--bg3); border-bottom: 2px solid var(--border); }
-  .pentad-table thead th {
-    padding: 13px 18px;
-    text-align: left;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .pentad-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
+  .pentad-table thead th { padding: 13px 18px; text-align: left; color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  .pentad-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
   .pentad-table tbody tr:last-child { border-bottom: none; }
   .pentad-table tbody tr:hover { background: var(--bg3); }
   .pentad-table tbody tr.grey-row { opacity: 0.6; }
   .pentad-table tbody tr.grey-row:hover { opacity: 0.85; background: var(--bg3); }
-
   .pentad-table td { padding: 16px 18px; vertical-align: middle; }
 
-  .pt-letter {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    line-height: 1;
-    text-align: center;
-    width: 50px;
-  }
-
+  .pt-letter { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; text-align: center; width: 50px; }
   .pt-name { font-size: 13px; font-weight: 500; letter-spacing: 1px; min-width: 90px; }
   .pt-bayes { color: var(--muted); font-size: 11px; min-width: 130px; }
   .pt-role { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; color: #9994b0; }
 
-  .pt-policy-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 2px;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
+  .pt-policy-badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
   .grey-badge { background: #88889915; border: 1px solid #88889930; color: var(--grey); }
   .active-badge { background: #6bcfff12; border: 1px solid #6bcfff30; color: var(--v-col); font-size: 9px; letter-spacing: 1.5px; }
   .m-badge { background: #ffd93d12; border: 1px solid #ffd93d30; color: var(--m-col); font-size: 9px; letter-spacing: 1.5px; }
@@ -477,8 +473,14 @@
   .sg-cell.muted { color: var(--muted); }
   .sg-num { color: var(--accent3); font-weight: 500; text-align: center; }
   .sg-num.method-num { color: var(--method-col); }
+  .sg-num.reg-num { color: var(--who-col); }
+  .sg-num.civ-num { color: var(--iso-col); }
   .sg-cell.method-cell { color: var(--method-col); }
   .sg-cell.method-desc { color: var(--muted); font-style: italic; }
+  .sg-cell.reg-cell { color: var(--who-col); }
+  .sg-cell.civ-cell { color: var(--iso-col); }
+  .sg-cell.reg-desc { color: var(--muted); font-style: italic; }
+  .sg-cell.civ-desc { color: var(--muted); font-style: italic; }
 
   /* INSIGHT */
   .insight {
@@ -492,9 +494,115 @@
   .insight.v-insight { border-color: var(--v-col); }
   .insight.grey-insight { border-color: var(--grey); }
   .insight.method-insight { border-color: var(--method-col); }
-
+  .insight.iso-insight { border-color: var(--iso-col); }
+  .insight.sdg-insight { border-color: var(--sdg-col); }
+  .insight.who-insight { border-color: var(--who-col); }
   .insight p { color: #c8c4d8; font-size: 17px; margin: 0; max-width: 100%; }
   .insight p strong { color: var(--text); font-weight: 600; }
+
+  /* NPA SLIDERS */
+  .npa-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .npa-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .npa-card:hover { border-color: var(--iso-col); }
+
+  .npa-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .npa-card.econ::before { background: var(--sdg-col); }
+  .npa-card.social::before { background: var(--s-col); }
+  .npa-card.health::before { background: var(--t-col); }
+  .npa-card.gov::before { background: var(--iso-col); }
+  .npa-card.env::before { background: var(--gap-col); }
+
+  .npa-domain {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .npa-card.econ .npa-domain { color: var(--sdg-col); }
+  .npa-card.social .npa-domain { color: var(--s-col); }
+  .npa-card.health .npa-domain { color: var(--t-col); }
+  .npa-card.gov .npa-domain { color: var(--iso-col); }
+  .npa-card.env .npa-domain { color: var(--gap-col); }
+
+  .npa-indicator {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .npa-bayes {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .npa-slider-wrap {
+    position: relative;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 8px 0 6px;
+  }
+
+  .npa-slider-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .npa-card.econ .npa-slider-fill { background: var(--sdg-col); }
+  .npa-card.social .npa-slider-fill { background: var(--s-col); }
+  .npa-card.health .npa-slider-fill { background: var(--t-col); }
+  .npa-card.gov .npa-slider-fill { background: var(--iso-col); }
+  .npa-card.env .npa-slider-fill { background: var(--gap-col); }
+
+  .npa-slider-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .npa-tmves {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-top: 10px;
+    display: inline-block;
+    background: #c8b8ff10;
+    border: 1px solid #c8b8ff20;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
 
   /* MAIN TWIN TABLE */
   .twin-table-wrap {
@@ -511,6 +619,9 @@
   tbody tr:hover { background: var(--bg3); }
   tbody tr.grey-row { opacity: 0.55; }
   tbody tr.grey-row:hover { opacity: 0.8; background: var(--bg3); }
+  /* NEW in v1.3 */
+  tbody tr.new-row { background: #7fffd408; }
+  tbody tr.new-row:hover { background: #7fffd412; }
   td { padding: 12px 16px; vertical-align: top; color: var(--text); }
   td.num { color: var(--muted); text-align: center; }
   td.readable { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: #c8c4d8; min-width: 200px; }
@@ -527,23 +638,34 @@
     color: var(--accent2);
   }
 
-  .node-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 2px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 1px;
-  }
+  .code-pill.new { border-color: #7fffd440; color: #7fffd4cc; }
 
+  .node-badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 10px; font-weight: 500; letter-spacing: 1px; }
   .badge-t { background: #ff6b6b15; color: var(--t-col); border: 1px solid #ff6b6b30; }
   .badge-m { background: #ffd93d15; color: var(--m-col); border: 1px solid #ffd93d30; }
   .badge-v { background: #6bcfff15; color: var(--v-col); border: 1px solid #6bcfff30; }
   .badge-e { background: #c8b8ff15; color: var(--e-col); border: 1px solid #c8b8ff30; }
   .badge-s { background: #6bffb815; color: var(--s-col); border: 1px solid #6bffb830; }
 
+  .onto-pill {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .onto-icd { background: #6bcfff0d; border: 1px solid #6bcfff25; color: var(--v-col); }
+  .onto-who { background: #f4a2610d; border: 1px solid #f4a26125; color: var(--who-col); }
+  .onto-iso { background: #90e0ef0d; border: 1px solid #90e0ef25; color: var(--iso-col); }
+  .onto-sdg { background: #e9c46a0d; border: 1px solid #e9c46a25; color: var(--sdg-col); }
+  .onto-method { background: #e8c87a0d; border: 1px solid #e8c87a25; color: var(--method-col); }
+
   td.notes { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--muted); font-style: italic; min-width: 180px; }
   td.grey-note { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--grey); }
+  td.new-note { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: #7fffd480; font-style: italic; }
 
   /* FILTER */
   .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
@@ -555,6 +677,9 @@
   .filter-btn.active.fv { border-color: var(--v-col); color: var(--v-col); }
   .filter-btn.active.fe { border-color: var(--e-col); color: var(--e-col); }
   .filter-btn.active.fs { border-color: var(--s-col); color: var(--s-col); }
+  .filter-btn.active.f4 { border-color: var(--who-col); color: var(--who-col); }
+  .filter-btn.active.f5 { border-color: var(--iso-col); color: var(--iso-col); }
+  .filter-btn.active.fnew { border-color: var(--accent2); color: var(--accent2); }
 
   /* FLOW */
   .flow { display: flex; align-items: center; gap: 0; margin: 32px 0; flex-wrap: wrap; }
@@ -563,6 +688,113 @@
   .flow-node .fn-bayes { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px; }
   .flow-arrow { color: var(--muted); font-size: 20px; padding: 0 4px; font-family: 'DM Mono', monospace; }
   .flow-node.active-node { border-color: var(--v-col); background: #6bcfff08; }
+
+  /* VISION 2040 TIMELINE */
+  .timeline {
+    margin: 32px 0;
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--iso-col), var(--sdg-col), var(--s-col));
+    opacity: 0.4;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 24px;
+    padding-left: 24px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--iso-col);
+    background: var(--bg);
+  }
+
+  .tl-item.active-tl::before { background: var(--iso-col); }
+
+  .tl-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--iso-col);
+    margin-bottom: 4px;
+  }
+
+  .tl-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .tl-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* SECTION HEADER NEW BADGE */
+  .section-new-badge {
+    display: inline-block;
+    background: #7fffd415;
+    border: 1px solid #7fffd440;
+    color: var(--accent2);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
+  /* STAT STRIP */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 32px 0;
+  }
+
+  .stat-cell {
+    background: var(--bg2);
+    padding: 20px 20px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
 
   footer {
     padding: 40px 60px;
@@ -595,15 +827,22 @@
     .method-table td { padding: 14px 12px; }
     .scale-grid { grid-template-columns: 50px 1fr 1fr; }
     .scale-grid .sg-cell:nth-child(4n), .scale-grid .sg-head:nth-child(4) { display: none; }
+    .npa-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.2</div>
+  <div class="eyebrow animate delay-1">Ukubona LLC · Kampala 2026 · v1.3 · Multi-Ontology Expansion</div>
   <h1 class="animate delay-2">Digital Twin<br><em>Naming Convention</em></h1>
   <div class="subtitle animate delay-3">ukb-{scale}-{domain}-{tmves}-dt-v{version} &nbsp;·&nbsp; Bayesian-Aware · Pentadic · Sovereign</div>
+  <div class="version-delta animate delay-4">
+    <span class="v-old">v1.2 · ICD-10 only · 40 twins</span>
+    <span class="v-arrow">→</span>
+    <span class="v-new">v1.3 · Multi-Ontology Bridge · 60 twins</span>
+    <span class="v-badge">NEW</span>
+  </div>
 </header>
 
 <!-- SECTION 00: THE METHOD LAYER -->
@@ -615,38 +854,21 @@
 
   <p>The five method artifacts are not arbitrary — they unfold in a deliberate sequence that mirrors the pentad itself. Read the order: it is the fractal.</p>
 
-  <!-- FRACTAL CHAIN -->
   <div class="fractal-box method-fractal">
     <p><strong>The method sequence is the TMVES chain applied to itself.</strong> Each method answers the question the previous one opens. geo names the territory; tmves compresses it into a navigable coordinate; sib confronts the wall inside that coordinate; eta governs movement through it; gap inherits what is already pre-computed. Territory → Perspective → Wall → Movement → Inheritance. Scale 0 folded back on Scale 0.</p>
     <div class="fractal-chain">
-      <div class="fc-wrap">
-        <div class="fc-node geo-tag">GEO</div>
-        <span class="fc-sub">territory</span>
-      </div>
+      <div class="fc-wrap"><div class="fc-node geo-tag">GEO</div><span class="fc-sub">territory</span></div>
       <div class="fc-arrow">→</div>
-      <div class="fc-wrap">
-        <div class="fc-node tmves-tag">TMVES</div>
-        <span class="fc-sub">compression</span>
-      </div>
+      <div class="fc-wrap"><div class="fc-node tmves-tag">TMVES</div><span class="fc-sub">compression</span></div>
       <div class="fc-arrow">→</div>
-      <div class="fc-wrap">
-        <div class="fc-node sib-tag">SIB</div>
-        <span class="fc-sub">wall</span>
-      </div>
+      <div class="fc-wrap"><div class="fc-node sib-tag">SIB</div><span class="fc-sub">wall</span></div>
       <div class="fc-arrow">→</div>
-      <div class="fc-wrap">
-        <div class="fc-node eta-tag">ETA</div>
-        <span class="fc-sub">movement</span>
-      </div>
+      <div class="fc-wrap"><div class="fc-node eta-tag">ETA</div><span class="fc-sub">movement</span></div>
       <div class="fc-arrow">→</div>
-      <div class="fc-wrap">
-        <div class="fc-node gap-tag">GAP</div>
-        <span class="fc-sub">inheritance</span>
-      </div>
+      <div class="fc-wrap"><div class="fc-node gap-tag">GAP</div><span class="fc-sub">inheritance</span></div>
     </div>
   </div>
 
-  <!-- METHOD TABLE -->
   <div class="method-table-wrap">
     <table class="method-table">
       <thead>
@@ -658,7 +880,6 @@
         </tr>
       </thead>
       <tbody>
-
         <tr>
           <td class="mt-step geo-color">①</td>
           <td class="mt-key">
@@ -671,11 +892,8 @@
             <div class="mt-bayes">𝓜 · curved historical surface · P(path | θ)</div>
             <div class="mt-desc">The patient is θ ∈ 𝓜 — a situated point on a curved historical surface. The territory is not flat. ℝⁿ is a special case of 𝓜 with history assumed away. The clinician's task is to find the path of least curvature-weighted distance through the diagnostic landscape. That path is the geodesic. Every other method is a tool for navigating it.</div>
           </td>
-          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0; min-width:160px;">
-            <em>What is the shape of the space we are moving through?</em>
-          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0; min-width:160px;"><em>What is the shape of the space we are moving through?</em></td>
         </tr>
-
         <tr>
           <td class="mt-step tmves-color">②</td>
           <td class="mt-key">
@@ -686,13 +904,10 @@
           <td>
             <div class="mt-title">The pentadic Bayesian chain — perspectivism from the PFC</div>
             <div class="mt-bayes">T→M→V→E→S · P(θ_t)→P(D|θ_t)→P(D)→P(θ|D)→P(θ_{t+1})</div>
-            <div class="mt-desc">TMVES is the compression matrix. The manifold 𝓜 is infinite-dimensional; no clinician or system can hold it whole. The five-node chain is what the prefrontal cortex does: it selects a perspective, a coordinate system, a lossy projection of the territory into something navigable. M is specifically the <em>compression matrix</em> — it encodes what data to expect given the prior, which is the same act as choosing what to measure. Gradient descent on the manifold is treatment: it preserves the eigenmode (E), the patient's essential identity, while correcting the trajectory.</div>
+            <div class="mt-desc">TMVES is the compression matrix. The manifold 𝓜 is infinite-dimensional; no clinician or system can hold it whole. The five-node chain is what the prefrontal cortex does: it selects a perspective, a coordinate system, a lossy projection of the territory into something navigable. M is specifically the <em>compression matrix</em> — it encodes what data to expect given the prior, which is the same act as choosing what to measure.</div>
           </td>
-          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
-            <em>How do we compress the territory into a navigable coordinate system?</em>
-          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;"><em>How do we compress the territory into a navigable coordinate system?</em></td>
         </tr>
-
         <tr>
           <td class="mt-step sib-color">③</td>
           <td class="mt-key">
@@ -703,13 +918,10 @@
           <td>
             <div class="mt-title">Sovereign Intelligence Broker</div>
             <div class="mt-bayes">V-node tool · P(D) under governance constraints</div>
-            <div class="mt-desc">Once TMVES has given us coordinates, the V-node is where medicine keeps failing. HIPAA, GDPR, stigma, siloed labs, institutional fear — these are not data problems, they are sovereignty failures at the V-node. The SIB is the specific tool built for this node: it treats inaccessible data as a <em>constrained prior</em> rather than a missing input. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference. The wall is inside the compression, which is inside the geodesic.</div>
+            <div class="mt-desc">Once TMVES has given us coordinates, the V-node is where medicine keeps failing. HIPAA, GDPR, stigma, siloed labs, institutional fear — these are not data problems, they are sovereignty failures at the V-node. The SIB treats inaccessible data as a <em>constrained prior</em> rather than a missing input. Missing data = wide prior, not a dead end. At Scale 5, the V-wall is bureaucratic sovereignty: ministries that do not share, development partners that silo, national data that is politically sensitive.</div>
           </td>
-          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
-            <em>What do we do when the data we need is behind a governance wall?</em>
-          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;"><em>What do we do when the data we need is behind a governance wall?</em></td>
         </tr>
-
         <tr>
           <td class="mt-step eta-color">④</td>
           <td class="mt-key">
@@ -720,13 +932,10 @@
           <td>
             <div class="mt-title">The catastrophic learning rate — irreversibility doctrine</div>
             <div class="mt-bayes">η ∝ 1/λᵢ · irreversibility-weighted step size</div>
-            <div class="mt-desc">We are on the geodesic, we have our compressed coordinates, we have threaded the V-node wall — now: how fast do we move? η must be proportional to reversibility. An irreversible step at incomplete evidence is η = ∞ on an unmapped landscape: it blows up the loss. The gate condition: max(L) &gt; 0.85, tissue confirmation obtained, N_completeness &gt; 0.90. The S-node does not fire before the E-node resolves. Treatment (gradient descent) must preserve the eigenmode — the thing about this patient that must not be destroyed in the correction.</div>
+            <div class="mt-desc">We are on the geodesic, we have our compressed coordinates, we have threaded the V-node wall — now: how fast do we move? η must be proportional to reversibility. At civilization scale, irreversibility is generational: a policy that is locked in for 20 years demands a much lower η than a quarterly budget reallocation. The gate condition scales with λᵢ. Infrastructure locks in trajectory; education and health investments compound.</div>
           </td>
-          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
-            <em>How fast can we move on the geodesic without destroying what we are trying to preserve?</em>
-          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;"><em>How fast can we move without destroying what we are trying to preserve?</em></td>
         </tr>
-
         <tr>
           <td class="mt-step gap-color">⑤</td>
           <td class="mt-key">
@@ -737,30 +946,99 @@
           <td>
             <div class="mt-title">Grey Aware Policy — inherited scalars</div>
             <div class="mt-bayes">Fast path · pre-computed geodesics · T and S nodes</div>
-            <div class="mt-desc">Some geodesics are already known. When the manifold is so well-mapped at the population level that the path is pre-computed — tPA yes/no, MUAC thresholds, ABCDE trauma chain — the individual twin inherits the scalar rather than re-running the full M→V→E sequence. GAP is the doctrine governing when that inheritance is valid and when it must yield to individual curvature. It is the fast path. The geodesic is the slow path. Both are necessary. GAP answers the question that only arises <em>after</em> you have understood the geodesic, the compression, the wall, and the permitted step size.</div>
+            <div class="mt-desc">Some geodesics are already known. When the manifold is so well-mapped at the population level that the path is pre-computed — tPA yes/no, MUAC thresholds, ABCDE trauma chain — the individual twin inherits the scalar rather than re-running the full M→V→E sequence. At Scale 5, GAP governs which SDG targets are pre-computed (child vaccination, WASH) and which require a fresh NPA slider calibration unique to the Ugandan manifold.</div>
           </td>
-          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;">
-            <em>When is the geodesic already computed, and can we inherit it rather than re-derive it?</em>
-          </td>
+          <td style="font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:#9994b0;"><em>When is the geodesic already computed, and can we inherit it rather than re-derive it?</em></td>
         </tr>
-
       </tbody>
     </table>
   </div>
-
-  <p style="color: var(--muted); font-size: 15px; font-style: italic; font-family: 'Cormorant Garamond', serif;">The organ at Kings College Budo was computing geodesics on an acoustic manifold. Psalm 23 named the master geodesic before the vocabulary existed. ℝⁿ is 𝓜 with history assumed away — the special case, not the general one.</p>
 
   <div class="insight method-insight">
     <p><strong>Scale 0 is the only scale with a shared URL stem.</strong> All method artifacts live at <span style="font-family:'DM Mono',monospace; color:var(--accent2); font-size:15px;">ukb-0-method-{key}-dt-v{nn}</span> — differentiated only by the method key. The geometry is invariant. The content changes. The address stays home.</p>
   </div>
 </section>
 
-<!-- SECTION 1: THE SCHEMA -->
+<!-- SECTION 00.5: MULTI-ONTOLOGY BRIDGE — NEW IN v1.3 -->
+<section>
+  <h3>00.5 · Multi-Ontology Bridge <span class="section-new-badge">NEW IN v1.3</span></h3>
+  <h2>Four standards, one manifold</h2>
+
+  <p>Version 1.2 used ICD-10 across all scales. This was epistemically adequate at Scales 1–3 — the territory is cellular, the vocabulary is precise. But at Scale 4 and Scale 5, forcing ICD-10 into the domain slot is the wrong compression: you end up measuring a forest with bark-disease vocabulary.</p>
+
+  <p>The v1.3 expansion introduces a <strong>Standard Multi-Ontology Bridge</strong>. No existing standard is abandoned; the appropriate standard is promoted at each scale. Three inherited ontologies plus one structural anchor for Scale 5: the nation-state as its own unique identifier.</p>
+
+  <div class="fractal-box iso-fractal">
+    <p><strong>Using <code style="font-family:'DM Mono',monospace; font-size:15px; color:var(--iso-col);">UGA</code> is not a failure to compress — it is a higher-order compression.</strong> In the TMVES chain at Scale 5: T is 146 districts × 100 indicators; M is the NPA slider matrix (values as input to the geodesic); V is the ISO-3166 code <code style="font-family:'DM Mono',monospace; color:var(--iso-col);">UGA</code> acting as the Sovereign Intelligence Pointer. If you used <code style="font-family:'DM Mono',monospace; color:var(--muted); font-size:14px;">Z75</code>, you'd be telling the manifold: "look at Uganda as a series of administrative hurdles." By using <code style="font-family:'DM Mono',monospace; color:var(--iso-col);">UGA</code>, you tell it: "look at this as a singular, historical, geodesic entity moving toward Vision 2040."</p>
+  </div>
+
+  <div class="bridge-table-wrap">
+    <table class="bridge-table">
+      <thead>
+        <tr>
+          <th>Scale</th>
+          <th>Entity</th>
+          <th>Domain Ontology</th>
+          <th>Why this standard</th>
+          <th>Example code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bt-scale method-num">0</td>
+          <td>
+            <div class="bt-entity" style="color:var(--method-col);">Method</div>
+            <div class="bt-onto" style="color:var(--muted); margin-top:4px;">Epistemological substrate</div>
+          </td>
+          <td><span class="onto-badge method-onto-badge">UKB-KEY</span></td>
+          <td class="bt-why">Method layer is scale-invariant; domain is the method key itself. geo, tmves, sib, eta, gap.</td>
+          <td class="bt-example">ukb-0-method-geo-dt-v00</td>
+        </tr>
+        <tr>
+          <td class="bt-scale" style="color:var(--v-col);">1–3</td>
+          <td>
+            <div class="bt-entity" style="color:var(--v-col);">Person · Network · System</div>
+            <div class="bt-onto" style="color:var(--muted); margin-top:4px;">Cellular / biological</div>
+          </td>
+          <td><span class="onto-badge icd-badge">ICD-10</span></td>
+          <td class="bt-why">High-resolution clinical specificity. Codes are stable, internationally auditable, and map directly to biological pathology. The organism is the patient.</td>
+          <td class="bt-example">ukb-1-C50-v-dt-v00</td>
+        </tr>
+        <tr>
+          <td class="bt-scale" style="color:var(--who-col);">4</td>
+          <td>
+            <div class="bt-entity" style="color:var(--who-col);">Regulator · Program</div>
+            <div class="bt-onto" style="color:var(--muted); margin-top:4px;">Policy domain</div>
+          </td>
+          <td><span class="onto-badge who-badge">WHO / UNSD</span></td>
+          <td class="bt-why">The patient is a program, not an organism. WHO program codes (PIAP, EPI, EWEC) and UNSD SDG indicators give the correct resolution. ICD codes at this scale describe symptoms of governance, not the governance itself.</td>
+          <td class="bt-example">ukb-4-EPI-t-dt-v00</td>
+        </tr>
+        <tr>
+          <td class="bt-scale" style="color:var(--iso-col);">5</td>
+          <td>
+            <div class="bt-entity" style="color:var(--iso-col);">Civilization · Nation-State</div>
+            <div class="bt-onto" style="color:var(--muted); margin-top:4px;">Sovereign entity</div>
+          </td>
+          <td><span class="onto-badge iso-badge">ISO 3166</span></td>
+          <td class="bt-why">The patient is the Republic. ISO 3166-1 alpha-3 names the organism — the singular, historical, geodesic entity moving along its own manifold. UGA is not a Z-code for administrative hurdles; it is the pointer to Vision 2040 as a clinical trajectory.</td>
+          <td class="bt-example">ukb-5-UGA-m-dt-v05</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight iso-insight">
+    <p><strong>A humble MD recognizes when the pathology is no longer cellular, but structural.</strong> The pentad is scale-invariant. The ontology of the domain slot must match the ontology of the patient. At Scale 5, the patient is a nation-state. ISO 3166 is the correct identification system. The manifold has led here; the expansion keeps it honest.</p>
+  </div>
+</section>
+
+<!-- SECTION 01: THE SCHEMA -->
 <section>
   <h3>01 · The Schema</h3>
   <h2>A name that knows where it lives in the inference chain</h2>
 
-  <p>Every digital twin in the Ukubona manifold carries its epistemological position in its name. The identifier is not a label — it is a coordinate in a five-dimensional inference space: scale, domain, and crucially, <em>which node of the Bayesian pentad this artifact primarily inhabits</em>.</p>
+  <p>Every digital twin in the Ukubona manifold carries its epistemological position in its name. The identifier is not a label — it is a coordinate in a five-dimensional inference space: scale, domain (now ontology-aware), and crucially, <em>which node of the Bayesian pentad this artifact primarily inhabits</em>.</p>
 
   <div class="schema">
     <div class="schema-code">
@@ -783,7 +1061,7 @@
       </div>
       <div class="legend-item">
         <span class="legend-key" style="color:var(--accent2)">domain</span>
-        <span class="legend-val">ICD-10 root, ontology key, or method key</span>
+        <span class="legend-val">ICD-10 (1–3) · WHO/UNSD (4) · ISO 3166 (5) · method key (0)</span>
       </div>
       <div class="legend-item">
         <span class="legend-key" style="color:var(--accent)">tmves</span>
@@ -796,15 +1074,15 @@
     </div>
   </div>
 
-  <p>The domain slot uses ICD-10 chapter/block codes at scales 2–3 (Network, System), anatomical shorthand at scale 1 (Person), ISO 3166 country codes at scale 5 (Civilization), and short method keys at scale 0 (Method). Three existing standards plus one new layer. No reinvention beyond what the architecture requires.</p>
+  <p>The domain slot now uses a standard determined by scale: ICD-10 chapter/block codes at scales 1–3, WHO program codes and UNSD SDG indicators at scale 4, ISO 3166 country codes at scale 5, and short method keys at scale 0. Four inherited standards. Zero reinvention beyond what the architecture compels.</p>
 </section>
 
-<!-- SECTION 2: THE PENTAD -->
+<!-- SECTION 02: THE PENTAD -->
 <section>
   <h3>02 · The Pentad</h3>
   <h2>T → M → V → E → S &nbsp; / &nbsp; P(θ_t) → P(D|θ_t) → P(D) → P(θ|D) → P(θ_{t+1})</h2>
 
-  <p>The five TMVES nodes map exactly onto the Bayesian inference chain. The twin's TMVES code declares which node it primarily inhabits — where its intelligence lives, and where it applies leverage on the clinical decision.</p>
+  <p>The five TMVES nodes map exactly onto the Bayesian inference chain. The twin's TMVES code declares which node it primarily inhabits — where its intelligence lives, and where it applies leverage on the clinical decision. At Scale 5, the "clinical decision" is national policy.</p>
 
   <div class="pentad-table-wrap">
     <table class="pentad-table">
@@ -822,35 +1100,35 @@
           <td class="pt-letter t-color">T</td>
           <td class="pt-name t-color">Tensor</td>
           <td class="pt-bayes">P(θ_t)<br>The accumulated prior</td>
-          <td class="pt-role">Civilization, population, clinical guidelines. The territory as inherited from population science. Sparse in the twin catalog because it is inherited, not computed fresh — the T-node is where GAP lives. Family history, germline risk, herd immunity thresholds, MUAC cutoffs.</td>
+          <td class="pt-role">Civilization, population, clinical guidelines. The territory as inherited from population science. At Scale 5, T is Vision 2040 itself — the prior over Uganda's developmental trajectory encoded by the NPA. MUAC cutoffs at Scale 1; GDP per capita growth targets at Scale 5. The form of the node is identical. The vocabulary changes.</td>
           <td><span class="pt-policy-badge grey-badge">Grey Aware</span></td>
         </tr>
         <tr>
           <td class="pt-letter m-color">M</td>
           <td class="pt-name m-color">Matrix</td>
           <td class="pt-bayes">P(D|θ_t)<br>Likelihood · study design</td>
-          <td class="pt-role">The compression matrix. Given the prior, what data would you expect? This is simultaneously the study design question (which labs to order, which imaging, which contacts to trace) and the PFC perspectivism act: choosing a coordinate system to project the manifold into. M is where clinical intelligence is designed.</td>
+          <td class="pt-role">The compression matrix. Given the prior, what data would you expect? At Scale 1, this is which labs to order. At Scale 5, this is which NPA slider indicators to weight — the matrix of development indicators that the National Planning Authority uses to project the national trajectory. M is where intelligence is designed at every scale.</td>
           <td><span class="pt-policy-badge m-badge">Compression</span></td>
         </tr>
         <tr>
           <td class="pt-letter v-color">V</td>
           <td class="pt-name v-color">Vector</td>
           <td class="pt-bayes">P(D)<br>The data itself</td>
-          <td class="pt-role">The actual data — and the governance wall that surrounds it. HIPAA, GDPR, stigma, siloed labs, institutional fear. This is where medicine keeps failing. The SIB is specifically a V-node tool. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference.</td>
+          <td class="pt-role">The actual data — and the governance wall that surrounds it. At Scale 1, the wall is HIPAA and stigma. At Scale 5, the wall is bureaucratic sovereignty: siloed ministries, development partners who won't share, politically sensitive national statistics. ISO 3166 code = the Sovereign Intelligence Pointer. Missing national data = wide prior, not a dead end.</td>
           <td><span class="pt-policy-badge active-badge">SIB Lives Here</span></td>
         </tr>
         <tr>
           <td class="pt-letter e-color">E</td>
           <td class="pt-name e-color">Eigen&shy;mode</td>
           <td class="pt-bayes">P(θ|D)<br>The posterior</td>
-          <td class="pt-role">Identity updated by evidence. The eigenmode is what treatment must preserve — gradient descent (clinical intervention) corrects the trajectory while keeping the patient's essential identity intact. When E is resolved, the irreversibility gate opens. The E-node is the destination of the inference chain.</td>
+          <td class="pt-role">Identity updated by evidence. At Scale 1, the eigenmode is what treatment must preserve in the patient. At Scale 5, the eigenmode is Uganda's developmental identity — the cultural, historical, and structural invariants that national policy must preserve while correcting the trajectory. Vision 2040 as E-node: the destination of the inference chain.</td>
           <td>—</td>
         </tr>
         <tr class="grey-row">
           <td class="pt-letter s-color">S</td>
           <td class="pt-name s-color">Scalar</td>
           <td class="pt-bayes">P(θ_{t+1})<br>The decision</td>
-          <td class="pt-role">The clinical scalar: tPA yes/no, refer vs operate, which drug at which dose. Once E is good, S is often a one-liner — which is the point. The loop closes. The prior updates. S is sparse in the twin catalog by design: don't reinvent the decision when the eigenmode has already resolved it. GAP governs this node too.</td>
+          <td class="pt-role">The decision scalar. At Scale 1: tPA yes/no, which drug at which dose. At Scale 5: which NDP-IV priority gets budget allocation, which infrastructure program gets accelerated. The form is identical. Once E is resolved, S is a one-liner — which is the point. The loop closes. The prior updates. The Republic's trajectory corrects.</td>
           <td><span class="pt-policy-badge grey-badge">Grey Aware</span></td>
         </tr>
       </tbody>
@@ -858,15 +1136,15 @@
   </div>
 
   <div class="insight grey-insight">
-    <p><strong>T and S are Grey Aware Policy.</strong> The prior (T) is set by population science. The decision (S) is the clinical scalar. The intelligence lives in M, V, and E. The governance failure lives at V. Don't reinvent the prior, don't delay the scalar.</p>
+    <p><strong>T and S are Grey Aware Policy at every scale.</strong> At Scale 1, the prior is set by population science and the decision is tPA yes/no. At Scale 5, the prior is Vision 2040 and the decision is NDP-IV budget allocation. The architecture is fractal. Don't reinvent the prior, don't delay the scalar.</p>
   </div>
 
   <div class="insight v-insight">
-    <p><strong>V is where medicine keeps failing.</strong> The decentralized Sovereign Intelligence Broker is specifically a V-node tool. Missing data = wide prior, not a dead end. The wall constrains the posterior; it does not kill inference.</p>
+    <p><strong>V is where medicine keeps failing — and where governance keeps failing.</strong> The Sovereign Intelligence Broker is a V-node tool at every scale. At Scale 5, it treats siloed ministerial data as a constrained prior. The wall constrains the posterior; it does not kill inference.</p>
   </div>
 </section>
 
-<!-- SECTION 3: SCALE INDEX -->
+<!-- SECTION 03: SCALE INDEX -->
 <section>
   <h3>03 · Scale Index</h3>
   <h2>Method → Person → Network → System → Regulator → Civilization</h2>
@@ -874,12 +1152,12 @@
   <div class="scale-grid">
     <div class="sg-head">Scale</div>
     <div class="sg-head">Name</div>
-    <div class="sg-head">Domain convention</div>
+    <div class="sg-head">Domain ontology</div>
     <div class="sg-head">Example</div>
 
     <div class="sg-cell sg-num method-num">0</div>
     <div class="sg-cell method-cell">Method</div>
-    <div class="sg-cell method-desc">Short key · geo · tmves · sib · eta · gap</div>
+    <div class="sg-cell method-desc">UKB key · geo · tmves · sib · eta · gap</div>
     <div class="sg-cell method-desc">ukb-0-method-geo-dt-v00</div>
 
     <div class="sg-cell sg-num">1</div>
@@ -897,33 +1175,193 @@
     <div class="sg-cell muted">ICD-10 chapter root</div>
     <div class="sg-cell muted">ukb-3-N18-e-dt-v00</div>
 
-    <div class="sg-cell sg-num">4</div>
-    <div class="sg-cell">Regulator</div>
-    <div class="sg-cell muted">Policy domain / WHO program code</div>
-    <div class="sg-cell muted">ukb-4-Z28-t-dt-v00</div>
+    <div class="sg-cell sg-num reg-num">4</div>
+    <div class="sg-cell reg-cell">Regulator</div>
+    <div class="sg-cell reg-desc">WHO program code · UNSD SDG indicator</div>
+    <div class="sg-cell reg-desc">ukb-4-EPI-t-dt-v00</div>
 
-    <div class="sg-cell sg-num">5</div>
-    <div class="sg-cell">Civilization</div>
-    <div class="sg-cell muted">ISO 3166 country / region code</div>
-    <div class="sg-cell muted">ukb-5-UGA-t-dt-v00</div>
+    <div class="sg-cell sg-num civ-num">5</div>
+    <div class="sg-cell civ-cell">Civilization</div>
+    <div class="sg-cell civ-desc">ISO 3166-1 alpha-3 country / region code</div>
+    <div class="sg-cell civ-desc">ukb-5-UGA-m-dt-v05</div>
   </div>
 </section>
 
-<!-- SECTION 4: THE MANIFOLD -->
+<!-- SECTION 03.5: NPA SLIDER MATRIX — NEW IN v1.3 -->
+<section>
+  <h3>03.5 · NPA Slider Matrix <span class="section-new-badge">NEW IN v1.3</span></h3>
+  <h2>Scale 5 — the M node at civilization resolution</h2>
+
+  <p>At Scale 5, the compression matrix M is the set of indicator weights that the National Planning Authority uses to project Uganda's developmental trajectory. These are not abstract statistics — they are the NPA sliders, the M node in action: given the prior (Vision 2040), which data would you expect, and in which direction is the geodesic curving?</p>
+
+  <p>Each indicator card below represents one axis of the national compression matrix. The slider fill represents the current posterior estimate relative to Vision 2040 targets. The TMVES tag marks which node this indicator primarily inhabits in the Bayesian chain.</p>
+
+  <div class="fractal-box sdg-fractal">
+    <p><strong>The NPA slider matrix is M at Scale 5.</strong> Vision 2040 is the T-node prior. The 146 districts × n indicators is the raw territory. The NPA slider matrix is the act of the compression — choosing which dimensions to track, how to weight them, what projection of the full manifold to hold in working memory. This is exactly what the prefrontal cortex does for a clinician reading a chart. The nation is the patient. The NPA is the PFC.</p>
+  </div>
+
+  <div class="npa-grid">
+    <div class="npa-card econ">
+      <div class="npa-domain">Economic · SDG 8</div>
+      <div class="npa-indicator">GDP per capita growth rate</div>
+      <div class="npa-bayes">P(D|θ_t) · likelihood of sustained growth given current trajectory</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:58%;"></div></div>
+      <div class="npa-slider-val">58% toward V2040 target</div>
+      <span class="npa-tmves">M-node</span>
+    </div>
+
+    <div class="npa-card social">
+      <div class="npa-domain">Human Capital · SDG 4</div>
+      <div class="npa-indicator">Universal secondary completion rate</div>
+      <div class="npa-bayes">P(D|θ_t) · human capital accumulation curve</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:44%;"></div></div>
+      <div class="npa-slider-val">44% toward V2040 target</div>
+      <span class="npa-tmves">M-node</span>
+    </div>
+
+    <div class="npa-card health">
+      <div class="npa-domain">Health · SDG 3</div>
+      <div class="npa-indicator">Maternal mortality ratio (per 100k)</div>
+      <div class="npa-bayes">P(D|θ_t) · MMR as eigenmode signal of system integrity</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:32%;"></div></div>
+      <div class="npa-slider-val">32% improvement toward target · 336/100k baseline</div>
+      <span class="npa-tmves">T-node · Grey Aware</span>
+    </div>
+
+    <div class="npa-card gov">
+      <div class="npa-domain">Governance · SDG 16</div>
+      <div class="npa-indicator">Rule of law index — V-wall permeability</div>
+      <div class="npa-bayes">P(D) · data sovereignty and institutional trust</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:51%;"></div></div>
+      <div class="npa-slider-val">51% · V-wall is partially permeable</div>
+      <span class="npa-tmves">V-node · SIB-relevant</span>
+    </div>
+
+    <div class="npa-card env">
+      <div class="npa-domain">Environment · SDG 15</div>
+      <div class="npa-indicator">Forest cover retention — Lake Victoria basin</div>
+      <div class="npa-bayes">P(D|θ_t) · ecological eigenmode preservation</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:39%;"></div></div>
+      <div class="npa-slider-val">39% toward restoration target · irreversible risk flagged</div>
+      <span class="npa-tmves">E-node · η-constrained</span>
+    </div>
+
+    <div class="npa-card econ">
+      <div class="npa-domain">Infrastructure · NDP-IV</div>
+      <div class="npa-indicator">Road density — Northern corridor km/km²</div>
+      <div class="npa-bayes">P(D|θ_t) · connectivity as geodesic curvature reducer</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:47%;"></div></div>
+      <div class="npa-slider-val">47% toward NDP-IV target</div>
+      <span class="npa-tmves">M-node · η-high</span>
+    </div>
+
+    <div class="npa-card social">
+      <div class="npa-domain">Demography · SDG 3</div>
+      <div class="npa-indicator">Total fertility rate — urban/rural convergence</div>
+      <div class="npa-bayes">P(θ_{t+1}) · demographic dividend window</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:29%;"></div></div>
+      <div class="npa-slider-val">29% toward target TFR · window closes 2040</div>
+      <span class="npa-tmves">S-node · time-critical</span>
+    </div>
+
+    <div class="npa-card gov">
+      <div class="npa-domain">Digital · NDP-IV</div>
+      <div class="npa-indicator">4G/5G population coverage — digital manifold</div>
+      <div class="npa-bayes">P(D|θ_t) · connectivity as V-wall permeability</div>
+      <div class="npa-slider-wrap"><div class="npa-slider-fill" style="width:63%;"></div></div>
+      <div class="npa-slider-val">63% population coverage · SIB infrastructure</div>
+      <span class="npa-tmves">V-node · SIB-enabling</span>
+    </div>
+  </div>
+
+  <div class="insight who-insight">
+    <p><strong>Each NPA slider is a claim about the likelihood function.</strong> The slider value is not a progress bar — it is P(D|θ_t), the probability of this data observation given the developmental prior. A low slider value does not mean failure; it means the manifold is curved away from target, and the geodesic must be recalculated with current η constraints. The NPA's job is to calibrate these weights. The Ukubona twin's job is to encode them.</p>
+  </div>
+
+  <!-- VISION 2040 TIMELINE -->
+  <h3 style="margin-top:40px;">Vision 2040 — Geodesic Waypoints</h3>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">2010 — Baseline</div>
+      <div class="tl-label">Vision 2040 promulgated · T-node prior encoded</div>
+      <div class="tl-code">ukb-5-UGA-t-dt-v00 · P(θ_2010) established</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2015/16 — NDP-II</div>
+      <div class="tl-label">National Development Plan II · M-matrix calibration</div>
+      <div class="tl-code">ukb-5-UGA-m-dt-v01 · compression matrix updated</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2020/21 — NDP-III</div>
+      <div class="tl-label">COVID shock · η correction · V-wall stress test</div>
+      <div class="tl-code">ukb-5-UGA-v-dt-v02 · SIB activated · missing data widened prior</div>
+    </div>
+    <div class="tl-item active-tl">
+      <div class="tl-year">2025/26 — NDP-IV (Current)</div>
+      <div class="tl-label">Posterior update · eigenmode check · NPA slider recalibration</div>
+      <div class="tl-code">ukb-5-UGA-m-dt-v05 · CURRENT · E-node not yet resolved</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2040 — Vision Target</div>
+      <div class="tl-label">Upper-middle income · E-node destination</div>
+      <div class="tl-code">ukb-5-UGA-e-dt-v∞ · S-node scalar: invest or correct</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 04: THE MANIFOLD — EXPANDED TO 60 TWINS -->
 <section>
   <h3>04 · The Manifold</h3>
-  <h2>40 twins across the decision space</h2>
+  <h2>60 twins across the decision space <span class="section-new-badge">+20 NEW IN v1.3</span></h2>
 
-  <p>Each row is a real clinical or population problem, named by its position in the inference chain. Greyed rows carry Grey Aware Policy designation — T priors set by civilization-scale evidence, S scalars executable once eigenmode E is resolved.</p>
+  <div class="stat-strip">
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--text);">60</div>
+      <div class="stat-label">Total Twins</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--t-col);">12</div>
+      <div class="stat-label">T · Prior</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--m-col);">16</div>
+      <div class="stat-label">M · Study Design</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--v-col);">10</div>
+      <div class="stat-label">V · Data</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--e-col);">15</div>
+      <div class="stat-label">E · Posterior</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--s-col);">7</div>
+      <div class="stat-label">S · Decision</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--who-col);">8</div>
+      <div class="stat-label">Scale 4 · New</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" style="color:var(--iso-col);">7</div>
+      <div class="stat-label">Scale 5 · New</div>
+    </div>
+  </div>
+
+  <p>Each row is a real clinical, programmatic, or population problem, named by its position in the inference chain. Greyed rows carry Grey Aware Policy designation. <span style="font-family:'DM Mono',monospace; font-size:12px; color:var(--accent2);">NEW</span> rows are v1.3 additions — Scale 4 WHO/UNSD and Scale 5 ISO 3166 twins.</p>
 
   <div class="filter-bar">
     <span class="filter-label">Filter →</span>
-    <button class="filter-btn active" onclick="filterTable('all', this)">All</button>
+    <button class="filter-btn active" onclick="filterTable('all', this)">All · 60</button>
     <button class="filter-btn ft" onclick="filterTable('t', this)">T · Prior</button>
-    <button class="filter-btn fm" onclick="filterTable('m', this)">M · Study Design</button>
+    <button class="filter-btn fm" onclick="filterTable('m', this)">M · Design</button>
     <button class="filter-btn fv" onclick="filterTable('v', this)">V · Data</button>
     <button class="filter-btn fe" onclick="filterTable('e', this)">E · Posterior</button>
     <button class="filter-btn fs" onclick="filterTable('s', this)">S · Decision</button>
+    <button class="filter-btn f4" onclick="filterTable('scale4', this)">Scale 4 · WHO</button>
+    <button class="filter-btn f5" onclick="filterTable('scale5', this)">Scale 5 · ISO</button>
+    <button class="filter-btn fnew" onclick="filterTable('new', this)">↑ New in v1.3</button>
   </div>
 
   <div class="twin-table-wrap">
@@ -934,71 +1372,98 @@
           <th>Twin (readable)</th>
           <th>UKB Code</th>
           <th>Scale</th>
-          <th>Domain</th>
+          <th>Domain · Ontology</th>
           <th>Node</th>
           <th>Notes</th>
         </tr>
       </thead>
       <tbody>
-        <tr data-node="v"><td class="num">1</td><td class="readable">Breast lump, 29yo</td><td class="code"><span class="code-pill">ukb-1-C50-v-dt-v00</span></td><td>Person</td><td>Breast onc</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Your existing twin · V wall = access to imaging</td></tr>
-        <tr data-node="e"><td class="num">2</td><td class="readable">CKD progression, eGFR trending</td><td class="code"><span class="code-pill">ukb-3-N18-e-dt-v00</span></td><td>System</td><td>CKD</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Your existing twin · eigenmode is eGFR slope</td></tr>
-        <tr data-node="m"><td class="num">3</td><td class="readable">Prostate PSA ambiguity, 58yo</td><td class="code"><span class="code-pill">ukb-1-C61-m-dt-v00</span></td><td>Person</td><td>Prostate onc</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Classic overdiagnosis · study design problem</td></tr>
-        <tr data-node="v"><td class="num">4</td><td class="readable">Childhood fever triage, Kampala</td><td class="code"><span class="code-pill">ukb-1-R50-v-dt-v00</span></td><td>Person</td><td>Fever/sepsis</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Malaria vs bacterial · V wall is time itself</td></tr>
-        <tr data-node="e"><td class="num">5</td><td class="readable">Maternal mortality risk, 3rd trimester</td><td class="code"><span class="code-pill">ukb-1-O94-e-dt-v00</span></td><td>Person</td><td>Obstetrics</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Uganda MMR 336/100k · enormous T prior</td></tr>
-        <tr data-node="m"><td class="num">6</td><td class="readable">Type 2 diabetes onset prediction</td><td class="code"><span class="code-pill">ukb-1-E11-m-dt-v00</span></td><td>Person</td><td>Metabolic</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Which labs to order · pure study design</td></tr>
-        <tr data-node="e"><td class="num">7</td><td class="readable">HIV treatment response, first-line ART</td><td class="code"><span class="code-pill">ukb-1-B24-e-dt-v00</span></td><td>Person</td><td>HIV</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Viral load as eigenmode update</td></tr>
-        <tr data-node="e"><td class="num">8</td><td class="readable">Hypertension cascade, 45yo</td><td class="code"><span class="code-pill">ukb-2-I10-e-dt-v00</span></td><td>Network</td><td>HTN</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Family + community as network posterior</td></tr>
-        <tr data-node="m"><td class="num">9</td><td class="readable">TB household transmission</td><td class="code"><span class="code-pill">ukb-2-A15-m-dt-v00</span></td><td>Network</td><td>TB</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Contact network prior shapes data collection</td></tr>
-        <tr data-node="e"><td class="num">10</td><td class="readable">Sickle cell, pain crisis prediction</td><td class="code"><span class="code-pill">ukb-1-D57-e-dt-v00</span></td><td>Person</td><td>Hematology</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Temporal · crisis has eigenmode signature</td></tr>
-        <tr data-node="v"><td class="num">11</td><td class="readable">Neonatal jaundice, 48hr</td><td class="code"><span class="code-pill">ukb-1-P59-v-dt-v00</span></td><td>Person</td><td>Neonatal</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Time-critical · bilirubin curve as V node</td></tr>
-        <tr data-node="m"><td class="num">12</td><td class="readable">Cervical cancer screening triage</td><td class="code"><span class="code-pill">ukb-1-C53-m-dt-v00</span></td><td>Person</td><td>GYN onc</td><td><span class="node-badge badge-m">M</span></td><td class="notes">VIA vs HPV vs colposcopy · study design</td></tr>
-        <tr class="grey-row" data-node="s"><td class="num">13</td><td class="readable">Epilepsy medication titration</td><td class="code"><span class="code-pill">ukb-1-G40-s-dt-v00</span></td><td>Person</td><td>Neurology</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · which drug, which dose</td></tr>
-        <tr data-node="e"><td class="num">14</td><td class="readable">Alcohol use disorder, liver trajectory</td><td class="code"><span class="code-pill">ukb-1-F10-e-dt-v00</span></td><td>Person</td><td>Psych/liver</td><td><span class="node-badge badge-e">E</span></td><td class="notes">λᵢ irreversibility very high</td></tr>
-        <tr data-node="v"><td class="num">15</td><td class="readable">Postpartum depression, 6-week visit</td><td class="code"><span class="code-pill">ukb-1-F53-v-dt-v00</span></td><td>Person</td><td>Perinatal psych</td><td><span class="node-badge badge-v">V</span></td><td class="notes">V wall = stigma · massively underdiagnosed</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">16</td><td class="readable">Malnutrition, under-5, Northern Uganda</td><td class="code"><span class="code-pill">ukb-1-E46-t-dt-v00</span></td><td>Person</td><td>Nutrition</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · MUAC as civilization prior</td></tr>
-        <tr class="grey-row" data-node="s"><td class="num">17</td><td class="readable">Stroke triage, 3hr window</td><td class="code"><span class="code-pill">ukb-1-I64-s-dt-v00</span></td><td>Person</td><td>Neuro/vasc</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · tPA yes/no · irreversible scalar</td></tr>
-        <tr data-node="m"><td class="num">18</td><td class="readable">Diabetic retinopathy screening</td><td class="code"><span class="code-pill">ukb-3-H36-m-dt-v00</span></td><td>System</td><td>Ophthalmology</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Camera + AI · data collection design</td></tr>
-        <tr data-node="e"><td class="num">19</td><td class="readable">Lung cancer, smoker, nodule 8mm</td><td class="code"><span class="code-pill">ukb-1-C34-e-dt-v00</span></td><td>Person</td><td>Thoracic onc</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Fleischner criteria as compressed prior</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">20</td><td class="readable">Colorectal cancer, Lynch syndrome family</td><td class="code"><span class="code-pill">ukb-2-C18-t-dt-v00</span></td><td>Network</td><td>GI onc</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · germline prior dominates</td></tr>
-        <tr class="grey-row" data-node="s"><td class="num">21</td><td class="readable">Acute abdomen, rural Uganda</td><td class="code"><span class="code-pill">ukb-1-R10-s-dt-v00</span></td><td>Person</td><td>Surgery</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · refer vs operate · irreversible</td></tr>
-        <tr data-node="e"><td class="num">22</td><td class="readable">Preterm birth risk, 24 weeks</td><td class="code"><span class="code-pill">ukb-1-O60-e-dt-v00</span></td><td>Person</td><td>Obstetrics</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Cervical length + fibronectin eigenmode</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">23</td><td class="readable">Schizophrenia first episode</td><td class="code"><span class="code-pill">ukb-1-F20-t-dt-v00</span></td><td>Person</td><td>Psychiatry</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · family history + prodrome as prior</td></tr>
-        <tr data-node="m"><td class="num">24</td><td class="readable">Antibiotic resistance, UTI</td><td class="code"><span class="code-pill">ukb-3-N39-m-dt-v00</span></td><td>System</td><td>Infect dis</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Local resistance patterns shape study design</td></tr>
-        <tr data-node="e"><td class="num">25</td><td class="readable">Falls risk, 80yo polypharmacy</td><td class="code"><span class="code-pill">ukb-1-W19-e-dt-v00</span></td><td>Person</td><td>Geriatrics</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Medication weights wᵢ interact</td></tr>
-        <tr data-node="m"><td class="num">26</td><td class="readable">Thyroid nodule, incidental</td><td class="code"><span class="code-pill">ukb-1-E04-m-dt-v00</span></td><td>Person</td><td>Endocrine</td><td><span class="node-badge badge-m">M</span></td><td class="notes">To biopsy or not · pure M design</td></tr>
-        <tr data-node="v"><td class="num">27</td><td class="readable">Mental health crisis, adolescent</td><td class="code"><span class="code-pill">ukb-1-F32-v-dt-v00</span></td><td>Person</td><td>Psychiatry</td><td><span class="node-badge badge-v">V</span></td><td class="notes">V wall = stigma · governance failure</td></tr>
-        <tr data-node="m"><td class="num">28</td><td class="readable">Construction worker injury risk</td><td class="code"><span class="code-pill">ukb-2-W99-m-dt-v00</span></td><td>Network</td><td>Occupational</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Your SSP twin territory</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">29</td><td class="readable">Cholera outbreak, camp setting</td><td class="code"><span class="code-pill">ukb-4-A00-t-dt-v00</span></td><td>Regulator</td><td>Infect dis</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · WASH policy as civilization prior</td></tr>
-        <tr class="grey-row" data-node="s"><td class="num">30</td><td class="readable">Road traffic accident triage</td><td class="code"><span class="code-pill">ukb-1-V89-s-dt-v00</span></td><td>Person</td><td>Trauma</td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · ABCDE scalar chain</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">31</td><td class="readable">Dementia onset, 68yo</td><td class="code"><span class="code-pill">ukb-1-F00-t-dt-v00</span></td><td>Person</td><td>Neurodegen</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · weight decay · your own framework</td></tr>
-        <tr data-node="m"><td class="num">32</td><td class="readable">Malaria prophylaxis, traveler</td><td class="code"><span class="code-pill">ukb-1-B54-m-dt-v00</span></td><td>Person</td><td>Infect dis</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Destination prior shapes drug choice</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">33</td><td class="readable">Child vaccination coverage gap</td><td class="code"><span class="code-pill">ukb-4-Z28-t-dt-v00</span></td><td>Regulator</td><td>Public health</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · herd immunity threshold as T prior</td></tr>
-        <tr data-node="m"><td class="num">34</td><td class="readable">Infertility workup, couple</td><td class="code"><span class="code-pill">ukb-2-N97-m-dt-v00</span></td><td>Network</td><td>Reproductive</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Dyadic · both nodes matter</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">35</td><td class="readable">Glaucoma screening, family hx</td><td class="code"><span class="code-pill">ukb-1-H40-t-dt-v00</span></td><td>Person</td><td>Ophthalmology</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · IOP as prior signal</td></tr>
-        <tr data-node="m"><td class="num">36</td><td class="readable">Mpox exposure, MSM network</td><td class="code"><span class="code-pill">ukb-2-B04-m-dt-v00</span></td><td>Network</td><td>Infect dis</td><td><span class="node-badge badge-m">M</span></td><td class="notes">Contact network is the M node</td></tr>
-        <tr data-node="v"><td class="num">37</td><td class="readable">Antenatal syphilis screening</td><td class="code"><span class="code-pill">ukb-1-A53-v-dt-v00</span></td><td>Person</td><td>STI</td><td><span class="node-badge badge-v">V</span></td><td class="notes">Testing as data collection act · V node</td></tr>
-        <tr data-node="e"><td class="num">38</td><td class="readable">Healthcare worker burnout</td><td class="code"><span class="code-pill">ukb-2-Z73-e-dt-v00</span></td><td>Network</td><td>Occupational</td><td><span class="node-badge badge-e">E</span></td><td class="notes">System-level weight decay</td></tr>
-        <tr class="grey-row" data-node="t"><td class="num">39</td><td class="readable">Uganda NCD burden, national</td><td class="code"><span class="code-pill">ukb-5-UGA-t-dt-v00</span></td><td>Civilization</td><td>NCD</td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · top of the pentad</td></tr>
-        <tr data-node="e"><td class="num">40</td><td class="readable">Sovereign SIB, mind twin</td><td class="code"><span class="code-pill">ukb-1-mind-e-dt-v00</span></td><td>Person</td><td>Cognitive</td><td><span class="node-badge badge-e">E</span></td><td class="notes">Non-plus-ultra · wᵢ elicitation · the mind is tractable</td></tr>
+        <!-- ── ORIGINAL 40 TWINS (v1.2) ── -->
+        <tr data-node="v" data-scale="1"><td class="num">1</td><td class="readable">Breast lump, 29yo</td><td class="code"><span class="code-pill">ukb-1-C50-v-dt-v00</span></td><td>Person</td><td>Breast onc <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="notes">Your existing twin · V wall = access to imaging</td></tr>
+        <tr data-node="e" data-scale="3"><td class="num">2</td><td class="readable">CKD progression, eGFR trending</td><td class="code"><span class="code-pill">ukb-3-N18-e-dt-v00</span></td><td>System</td><td>CKD <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Your existing twin · eigenmode is eGFR slope</td></tr>
+        <tr data-node="m" data-scale="1"><td class="num">3</td><td class="readable">Prostate PSA ambiguity, 58yo</td><td class="code"><span class="code-pill">ukb-1-C61-m-dt-v00</span></td><td>Person</td><td>Prostate onc <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Classic overdiagnosis · study design problem</td></tr>
+        <tr data-node="v" data-scale="1"><td class="num">4</td><td class="readable">Childhood fever triage, Kampala</td><td class="code"><span class="code-pill">ukb-1-R50-v-dt-v00</span></td><td>Person</td><td>Fever/sepsis <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="notes">Malaria vs bacterial · V wall is time itself</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">5</td><td class="readable">Maternal mortality risk, 3rd trimester</td><td class="code"><span class="code-pill">ukb-1-O94-e-dt-v00</span></td><td>Person</td><td>Obstetrics <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Uganda MMR 336/100k · enormous T prior</td></tr>
+        <tr data-node="m" data-scale="1"><td class="num">6</td><td class="readable">Type 2 diabetes onset prediction</td><td class="code"><span class="code-pill">ukb-1-E11-m-dt-v00</span></td><td>Person</td><td>Metabolic <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Which labs to order · pure study design</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">7</td><td class="readable">HIV treatment response, first-line ART</td><td class="code"><span class="code-pill">ukb-1-B24-e-dt-v00</span></td><td>Person</td><td>HIV <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Viral load as eigenmode update</td></tr>
+        <tr data-node="e" data-scale="2"><td class="num">8</td><td class="readable">Hypertension cascade, 45yo</td><td class="code"><span class="code-pill">ukb-2-I10-e-dt-v00</span></td><td>Network</td><td>HTN <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Family + community as network posterior</td></tr>
+        <tr data-node="m" data-scale="2"><td class="num">9</td><td class="readable">TB household transmission</td><td class="code"><span class="code-pill">ukb-2-A15-m-dt-v00</span></td><td>Network</td><td>TB <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Contact network prior shapes data collection</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">10</td><td class="readable">Sickle cell, pain crisis prediction</td><td class="code"><span class="code-pill">ukb-1-D57-e-dt-v00</span></td><td>Person</td><td>Hematology <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Temporal · crisis has eigenmode signature</td></tr>
+        <tr data-node="v" data-scale="1"><td class="num">11</td><td class="readable">Neonatal jaundice, 48hr</td><td class="code"><span class="code-pill">ukb-1-P59-v-dt-v00</span></td><td>Person</td><td>Neonatal <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="notes">Time-critical · bilirubin curve as V node</td></tr>
+        <tr data-node="m" data-scale="1"><td class="num">12</td><td class="readable">Cervical cancer screening triage</td><td class="code"><span class="code-pill">ukb-1-C53-m-dt-v00</span></td><td>Person</td><td>GYN onc <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">VIA vs HPV vs colposcopy · study design</td></tr>
+        <tr class="grey-row" data-node="s" data-scale="1"><td class="num">13</td><td class="readable">Epilepsy medication titration</td><td class="code"><span class="code-pill">ukb-1-G40-s-dt-v00</span></td><td>Person</td><td>Neurology <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · which drug, which dose</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">14</td><td class="readable">Alcohol use disorder, liver trajectory</td><td class="code"><span class="code-pill">ukb-1-F10-e-dt-v00</span></td><td>Person</td><td>Psych/liver <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">λᵢ irreversibility very high</td></tr>
+        <tr data-node="v" data-scale="1"><td class="num">15</td><td class="readable">Postpartum depression, 6-week visit</td><td class="code"><span class="code-pill">ukb-1-F53-v-dt-v00</span></td><td>Person</td><td>Perinatal psych <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="notes">V wall = stigma · massively underdiagnosed</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="1"><td class="num">16</td><td class="readable">Malnutrition, under-5, Northern Uganda</td><td class="code"><span class="code-pill">ukb-1-E46-t-dt-v00</span></td><td>Person</td><td>Nutrition <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · MUAC as civilization prior</td></tr>
+        <tr class="grey-row" data-node="s" data-scale="1"><td class="num">17</td><td class="readable">Stroke triage, 3hr window</td><td class="code"><span class="code-pill">ukb-1-I64-s-dt-v00</span></td><td>Person</td><td>Neuro/vasc <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · tPA yes/no · irreversible scalar</td></tr>
+        <tr data-node="m" data-scale="3"><td class="num">18</td><td class="readable">Diabetic retinopathy screening</td><td class="code"><span class="code-pill">ukb-3-H36-m-dt-v00</span></td><td>System</td><td>Ophthalmology <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Camera + AI · data collection design</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">19</td><td class="readable">Lung cancer, smoker, nodule 8mm</td><td class="code"><span class="code-pill">ukb-1-C34-e-dt-v00</span></td><td>Person</td><td>Thoracic onc <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Fleischner criteria as compressed prior</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="2"><td class="num">20</td><td class="readable">Colorectal cancer, Lynch syndrome family</td><td class="code"><span class="code-pill">ukb-2-C18-t-dt-v00</span></td><td>Network</td><td>GI onc <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · germline prior dominates</td></tr>
+        <tr class="grey-row" data-node="s" data-scale="1"><td class="num">21</td><td class="readable">Acute abdomen, rural Uganda</td><td class="code"><span class="code-pill">ukb-1-R10-s-dt-v00</span></td><td>Person</td><td>Surgery <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · refer vs operate · irreversible</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">22</td><td class="readable">Preterm birth risk, 24 weeks</td><td class="code"><span class="code-pill">ukb-1-O60-e-dt-v00</span></td><td>Person</td><td>Obstetrics <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Cervical length + fibronectin eigenmode</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="1"><td class="num">23</td><td class="readable">Schizophrenia first episode</td><td class="code"><span class="code-pill">ukb-1-F20-t-dt-v00</span></td><td>Person</td><td>Psychiatry <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · family history + prodrome as prior</td></tr>
+        <tr data-node="m" data-scale="3"><td class="num">24</td><td class="readable">Antibiotic resistance, UTI</td><td class="code"><span class="code-pill">ukb-3-N39-m-dt-v00</span></td><td>System</td><td>Infect dis <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Local resistance patterns shape study design</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">25</td><td class="readable">Falls risk, 80yo polypharmacy</td><td class="code"><span class="code-pill">ukb-1-W19-e-dt-v00</span></td><td>Person</td><td>Geriatrics <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Medication weights wᵢ interact</td></tr>
+        <tr data-node="m" data-scale="1"><td class="num">26</td><td class="readable">Thyroid nodule, incidental</td><td class="code"><span class="code-pill">ukb-1-E04-m-dt-v00</span></td><td>Person</td><td>Endocrine <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">To biopsy or not · pure M design</td></tr>
+        <tr data-node="v" data-scale="1"><td class="num">27</td><td class="readable">Mental health crisis, adolescent</td><td class="code"><span class="code-pill">ukb-1-F32-v-dt-v00</span></td><td>Person</td><td>Psychiatry <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="notes">V wall = stigma · governance failure</td></tr>
+        <tr data-node="m" data-scale="2"><td class="num">28</td><td class="readable">Construction worker injury risk</td><td class="code"><span class="code-pill">ukb-2-W99-m-dt-v00</span></td><td>Network</td><td>Occupational <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">SSP twin territory</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="4"><td class="num">29</td><td class="readable">Cholera outbreak, camp setting</td><td class="code"><span class="code-pill">ukb-4-A00-t-dt-v00</span></td><td>Regulator</td><td>Infect dis <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · WASH policy as civilization prior</td></tr>
+        <tr class="grey-row" data-node="s" data-scale="1"><td class="num">30</td><td class="readable">Road traffic accident triage</td><td class="code"><span class="code-pill">ukb-1-V89-s-dt-v00</span></td><td>Person</td><td>Trauma <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · ABCDE scalar chain</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="1"><td class="num">31</td><td class="readable">Dementia onset, 68yo</td><td class="code"><span class="code-pill">ukb-1-F00-t-dt-v00</span></td><td>Person</td><td>Neurodegen <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · weight decay · your own framework</td></tr>
+        <tr data-node="m" data-scale="1"><td class="num">32</td><td class="readable">Malaria prophylaxis, traveler</td><td class="code"><span class="code-pill">ukb-1-B54-m-dt-v00</span></td><td>Person</td><td>Infect dis <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Destination prior shapes drug choice</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="4"><td class="num">33</td><td class="readable">Child vaccination coverage gap</td><td class="code"><span class="code-pill">ukb-4-Z28-t-dt-v00</span></td><td>Regulator</td><td>Public health <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · herd immunity threshold as T prior</td></tr>
+        <tr data-node="m" data-scale="2"><td class="num">34</td><td class="readable">Infertility workup, couple</td><td class="code"><span class="code-pill">ukb-2-N97-m-dt-v00</span></td><td>Network</td><td>Reproductive <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Dyadic · both nodes matter</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="1"><td class="num">35</td><td class="readable">Glaucoma screening, family hx</td><td class="code"><span class="code-pill">ukb-1-H40-t-dt-v00</span></td><td>Person</td><td>Ophthalmology <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · IOP as prior signal</td></tr>
+        <tr data-node="m" data-scale="2"><td class="num">36</td><td class="readable">Mpox exposure, MSM network</td><td class="code"><span class="code-pill">ukb-2-B04-m-dt-v00</span></td><td>Network</td><td>Infect dis <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="notes">Contact network is the M node</td></tr>
+        <tr data-node="v" data-scale="1"><td class="num">37</td><td class="readable">Antenatal syphilis screening</td><td class="code"><span class="code-pill">ukb-1-A53-v-dt-v00</span></td><td>Person</td><td>STI <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="notes">Testing as data collection act · V node</td></tr>
+        <tr data-node="e" data-scale="2"><td class="num">38</td><td class="readable">Healthcare worker burnout</td><td class="code"><span class="code-pill">ukb-2-Z73-e-dt-v00</span></td><td>Network</td><td>Occupational <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">System-level weight decay</td></tr>
+        <tr class="grey-row" data-node="t" data-scale="5"><td class="num">39</td><td class="readable">Uganda NCD burden, national</td><td class="code"><span class="code-pill">ukb-5-UGA-t-dt-v00</span></td><td>Civilization</td><td>NCD <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · top of the pentad</td></tr>
+        <tr data-node="e" data-scale="1"><td class="num">40</td><td class="readable">Sovereign SIB, mind twin</td><td class="code"><span class="code-pill">ukb-1-mind-e-dt-v00</span></td><td>Person</td><td>Cognitive <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="notes">Non-plus-ultra · wᵢ elicitation · the mind is tractable</td></tr>
+
+        <!-- ── NEW SCALE 4 TWINS (v1.3) · WHO/UNSD ONTOLOGY ── -->
+        <tr class="new-row" data-node="m" data-scale="4" data-new="1"><td class="num">41</td><td class="readable">Expanded Programme on Immunisation, Uganda</td><td class="code"><span class="code-pill new">ukb-4-EPI-m-dt-v00</span></td><td>Regulator</td><td>EPI program <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-m">M</span></td><td class="new-note">M-node: which vaccines, which districts, which schedule compression</td></tr>
+        <tr class="new-row" data-node="v" data-scale="4" data-new="1"><td class="num">42</td><td class="readable">HMIS data sovereignty wall, MOH Uganda</td><td class="code"><span class="code-pill new">ukb-4-HMIS-v-dt-v00</span></td><td>Regulator</td><td>Health informatics <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-v">V</span></td><td class="new-note">V wall = siloed district HMIS · SIB-relevant · wide prior until linked</td></tr>
+        <tr class="grey-row new-row" data-node="t" data-scale="4" data-new="1"><td class="num">43</td><td class="readable">SDG 3.1 — MMR target, East Africa region</td><td class="code"><span class="code-pill new">ukb-4-SDG3-t-dt-v00</span></td><td>Regulator</td><td>SDG 3.1 <span class="onto-pill onto-sdg">UNSD</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · 70/100k target as regional prior</td></tr>
+        <tr class="new-row" data-node="e" data-scale="4" data-new="1"><td class="num">44</td><td class="readable">PEPFAR program eigenmode — viral suppression</td><td class="code"><span class="code-pill new">ukb-4-PEFAR-e-dt-v00</span></td><td>Regulator</td><td>PEPFAR <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-e">E</span></td><td class="new-note">95-95-95 targets as program eigenmode · treatment preserves identity</td></tr>
+        <tr class="new-row" data-node="m" data-scale="4" data-new="1"><td class="num">45</td><td class="readable">Community Health Extension Worker network design</td><td class="code"><span class="code-pill new">ukb-4-CHEW-m-dt-v00</span></td><td>Regulator</td><td>Primary care <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-m">M</span></td><td class="new-note">M-node: which cadre, which ratio, which referral chain to design</td></tr>
+        <tr class="grey-row new-row" data-node="s" data-scale="4" data-new="1"><td class="num">46</td><td class="readable">Emergency procurement scalar — stockout</td><td class="code"><span class="code-pill new">ukb-4-NMS-s-dt-v00</span></td><td>Regulator</td><td>Supply chain <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · essential medicines gap · scalar is order/no-order</td></tr>
+        <tr class="new-row" data-node="v" data-scale="4" data-new="1"><td class="num">47</td><td class="readable">Demographic Health Survey — data gap</td><td class="code"><span class="code-pill new">ukb-4-DHS-v-dt-v00</span></td><td>Regulator</td><td>Population survey <span class="onto-pill onto-sdg">UNSD</span></td><td><span class="node-badge badge-v">V</span></td><td class="new-note">V wall = survey access · 5-year data gap widens prior</td></tr>
+        <tr class="new-row" data-node="e" data-scale="4" data-new="1"><td class="num">48</td><td class="readable">WHO PIAP — pandemic preparedness eigenmode</td><td class="code"><span class="code-pill new">ukb-4-PIAP-e-dt-v00</span></td><td>Regulator</td><td>PIAP <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-e">E</span></td><td class="new-note">Preparedness score as national posterior · IHR compliance as eigenmode</td></tr>
+
+        <!-- ── NEW SCALE 5 TWINS (v1.3) · ISO 3166 ONTOLOGY ── -->
+        <tr class="new-row" data-node="m" data-scale="5" data-new="1"><td class="num">49</td><td class="readable">Uganda Vision 2040 — NPA slider matrix</td><td class="code"><span class="code-pill new">ukb-5-UGA-m-dt-v05</span></td><td>Civilization</td><td>UGA <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-m">M</span></td><td class="new-note">THE pivotal twin · M-node at national scale · NDP-IV compression matrix</td></tr>
+        <tr class="new-row" data-node="v" data-scale="5" data-new="1"><td class="num">50</td><td class="readable">Uganda UBOS data sovereignty — statistical wall</td><td class="code"><span class="code-pill new">ukb-5-UGA-v-dt-v01</span></td><td>Civilization</td><td>UGA <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-v">V</span></td><td class="new-note">V wall = UBOS access restrictions · ministerial silos · SIB at national scale</td></tr>
+        <tr class="grey-row new-row" data-node="t" data-scale="5" data-new="1"><td class="num">51</td><td class="readable">East Africa Community — regional prior</td><td class="code"><span class="code-pill new">ukb-5-EAC-t-dt-v00</span></td><td>Civilization</td><td>EAC region <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · EAC integration as supra-national T-prior · UGA within larger manifold</td></tr>
+        <tr class="new-row" data-node="e" data-scale="5" data-new="1"><td class="num">52</td><td class="readable">Uganda developmental eigenmode — Vision 2040 posterior</td><td class="code"><span class="code-pill new">ukb-5-UGA-e-dt-v05</span></td><td>Civilization</td><td>UGA <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-e">E</span></td><td class="new-note">The national eigenmode: cultural + historical invariants that development must preserve</td></tr>
+        <tr class="grey-row new-row" data-node="s" data-scale="5" data-new="1"><td class="num">53</td><td class="readable">NDP-IV budget allocation scalar</td><td class="code"><span class="code-pill new">ukb-5-UGA-s-dt-v05</span></td><td>Civilization</td><td>UGA <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-s">S</span></td><td class="grey-note">GREY AWARE · fiscal year decision · once E resolved, scalar is executable</td></tr>
+        <tr class="new-row" data-node="m" data-scale="5" data-new="1"><td class="num">54</td><td class="readable">Kenya — NPA equivalent, Vision 2030</td><td class="code"><span class="code-pill new">ukb-5-KEN-m-dt-v00</span></td><td>Civilization</td><td>KEN <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-m">M</span></td><td class="new-note">Comparative M-node · Kenya manifold as prior for EAC corridor geodesic</td></tr>
+        <tr class="new-row" data-node="v" data-scale="5" data-new="1"><td class="num">55</td><td class="readable">Sub-Saharan Africa — SSA V-wall aggregate</td><td class="code"><span class="code-pill new">ukb-5-SSA-v-dt-v00</span></td><td>Civilization</td><td>SSA region <span class="onto-pill onto-iso">ISO 3166</span></td><td><span class="node-badge badge-v">V</span></td><td class="new-note">V wall at continental scale · data harmonization as SIB mandate</td></tr>
+
+        <!-- ── ADDITIONAL CLINICAL EXPANSION (v1.3) ── -->
+        <tr class="new-row" data-node="m" data-scale="1" data-new="1"><td class="num">56</td><td class="readable">Sickle cell trait carrier, reproductive counseling</td><td class="code"><span class="code-pill new">ukb-1-D57-m-dt-v01</span></td><td>Person</td><td>Hematology <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-m">M</span></td><td class="new-note">Variant of #10 · M-node: who to screen, what to measure, when to counsel</td></tr>
+        <tr class="new-row" data-node="v" data-scale="2" data-new="1"><td class="num">57</td><td class="readable">Intimate partner violence, referral network</td><td class="code"><span class="code-pill new">ukb-2-Y07-v-dt-v00</span></td><td>Network</td><td>GBV/Trauma <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-v">V</span></td><td class="new-note">V wall = stigma + safety risk · disclosure as constrained data event</td></tr>
+        <tr class="new-row" data-node="e" data-scale="3" data-new="1"><td class="num">58</td><td class="readable">Health system resilience — district level</td><td class="code"><span class="code-pill new">ukb-3-Z75-e-dt-v00</span></td><td>System</td><td>System capacity <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="new-note">District eigenmode: what this health system can absorb without losing identity</td></tr>
+        <tr class="grey-row new-row" data-node="t" data-scale="3" data-new="1"><td class="num">59</td><td class="readable">AMR stewardship, national formulary</td><td class="code"><span class="code-pill new">ukb-3-AMR-t-dt-v00</span></td><td>System</td><td>AMR policy <span class="onto-pill onto-who">WHO</span></td><td><span class="node-badge badge-t">T</span></td><td class="grey-note">GREY AWARE · WHO GLASS data as civilization-level antibiogram prior</td></tr>
+        <tr class="new-row" data-node="e" data-scale="2" data-new="1"><td class="num">60</td><td class="readable">Refugee health network, Nakivale</td><td class="code"><span class="code-pill new">ukb-2-Z59-e-dt-v01</span></td><td>Network</td><td>Refugee health <span class="onto-pill onto-icd">ICD-10</span></td><td><span class="node-badge badge-e">E</span></td><td class="new-note">Displaced population eigenmode · double V-wall: nationality + displacement status</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="insight v-insight">
-    <p><strong>The distribution tells the story.</strong> M, V, and E dominate because that is where clinical intelligence actually lives — designing what to measure, collecting it through the governance wall, and updating the posterior. T and S are sparse by design: the prior is inherited from civilization-scale science, the decision is a one-liner once E is resolved. Grey Aware Policy means: don't reinvent the prior, don't delay the scalar.</p>
+    <p><strong>The distribution tells the story, and the story has grown.</strong> M, V, and E dominate because that is where clinical and developmental intelligence lives — designing what to measure, collecting it through the governance wall, and updating the posterior. The v1.3 expansion adds eight Scale 4 and seven Scale 5 twins. At every scale, the V-node is where governance fails. The SIB is always the answer.</p>
   </div>
 </section>
 
-<!-- SECTION 5: THE THESIS -->
+<!-- SECTION 05: THE THESIS -->
 <section>
   <h3>05 · The Thesis</h3>
-  <h2>Decentralized sovereignty at the V node</h2>
+  <h2>Decentralized sovereignty at the V node — from clinic to Republic</h2>
 
-  <p>The Sovereign Intelligence Broker is not a product. It is a position in the inference chain. Every twin in this catalog is a rehearsal of the same fundamental act: <em>conditioning on everything known about a person, then updating when new evidence arrives</em>.</p>
+  <p>The Sovereign Intelligence Broker is not a product. It is a position in the inference chain. Every twin in this catalog — from a breast lump in a 29-year-old to Uganda's Vision 2040 trajectory — is a rehearsal of the same fundamental act: <em>conditioning on everything known about a patient, then updating when new evidence arrives</em>.</p>
 
-  <p>The naming convention is the infrastructure of that act. A twin without a name that encodes its epistemic position is a model without a coordinate. The manifold has no address. The inference cannot be routed.</p>
+  <p>The naming convention is the infrastructure of that act. A twin without a name that encodes its epistemic position is a model without a coordinate. The manifold has no address. The inference cannot be routed. At Scale 5, the patient is the Republic. The manifold is the history of a nation. The geodesic is Vision 2040. The V-wall is ministerial sovereignty.</p>
 
-  <p>The body twin is hard — every disease rewrites the schema. The mind twin is tractable — the architecture is invariant. The weights are everything.</p>
+  <p>The catalog has expanded not because the architecture changed — but because the architecture was always this big. ICD-10 was a ladder. The multi-ontology bridge is the floor it was always standing on.</p>
 
   <div class="flow">
     <div class="flow-node" style="opacity:0.6">
@@ -1027,38 +1492,79 @@
     </div>
   </div>
 
-  <p style="margin-top: 8px; font-style: italic; color: var(--muted); font-size: 15px;">Posteriors become the next priors. The loop is the product. The twin is the loop.</p>
+  <p style="margin-top: 8px; font-style: italic; color: var(--muted); font-size: 15px;">Posteriors become the next priors. The loop is the product. The twin is the loop. The Republic is also the patient.</p>
+
+  <div class="fractal-box iso-fractal" style="margin-top:32px;">
+    <p><strong>Scale 5 is not a metaphor.</strong> When the NPA recalibrates its sliders for NDP-IV, it is performing M-node compression on the Ugandan manifold. When UBOS withholds district-level data, it is creating a V-wall that widens the national prior. When Vision 2040 is articulated, it is encoding a T-node prior for the Republic. The pentad is scale-invariant. The catalog now says so explicitly.</p>
+  </div>
 </section>
 
 <footer>
   <div class="footer-brand">Ukubona</div>
   <div class="footer-meta">
-    ukb-naming-convention-v1.2<br>
+    ukb-naming-convention-v1.3<br>
     Kampala, Uganda · 2026<br>
+    ICD-10 · WHO/UNSD · ISO 3166 · UKB-KEY<br>
     geo → tmves → sib → eta → gap ↺
   </div>
 </footer>
 
 <script>
-  function filterTable(node, btn) {
+  function filterTable(filter, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const rows = document.querySelectorAll('#twinTable tbody tr');
     rows.forEach(row => {
-      row.style.display = (node === 'all' || row.dataset.node === node) ? '' : 'none';
+      let show = false;
+      if (filter === 'all') {
+        show = true;
+      } else if (filter === 'new') {
+        show = row.dataset.new === '1';
+      } else if (filter === 'scale4') {
+        show = row.dataset.scale === '4';
+      } else if (filter === 'scale5') {
+        show = row.dataset.scale === '5';
+      } else {
+        show = row.dataset.node === filter;
+      }
+      row.style.display = show ? '' : 'none';
     });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Animate table rows
     const rows = document.querySelectorAll('#twinTable tbody tr');
     rows.forEach((row, i) => {
       row.style.opacity = '0';
       row.style.transform = 'translateY(8px)';
-      row.style.transition = `opacity 0.3s ease ${i * 0.02}s, transform 0.3s ease ${i * 0.02}s`;
+      row.style.transition = `opacity 0.3s ease ${i * 0.015}s, transform 0.3s ease ${i * 0.015}s`;
       setTimeout(() => {
-        row.style.opacity = row.classList.contains('grey-row') ? '0.55' : '1';
+        let baseOpacity = row.classList.contains('grey-row') ? '0.55' : '1';
+        row.style.opacity = baseOpacity;
         row.style.transform = 'translateY(0)';
-      }, 100 + i * 20);
+      }, 100 + i * 15);
+    });
+
+    // Animate NPA sliders
+    const fills = document.querySelectorAll('.npa-slider-fill');
+    fills.forEach(fill => {
+      const targetWidth = fill.style.width;
+      fill.style.width = '0%';
+      setTimeout(() => {
+        fill.style.width = targetWidth;
+      }, 600);
+    });
+
+    // Timeline dot animation
+    const tlItems = document.querySelectorAll('.tl-item');
+    tlItems.forEach((item, i) => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateX(-10px)';
+      item.style.transition = `opacity 0.4s ease ${0.8 + i * 0.1}s, transform 0.4s ease ${0.8 + i * 0.1}s`;
+      setTimeout(() => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateX(0)';
+      }, 800 + i * 100);
     });
   });
 </script>
